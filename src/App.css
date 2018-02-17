@@ -1,0 +1,64 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 80px;
+}
+
+.App-header {
+  background-color: #222;
+  height: 70px;
+  padding: 20px;
+  color: white;
+}
+
+.App-title {
+  font-size: 1.5em;
+}
+
+.App-intro {
+  font-size: large;
+}
+
+@keyframes App-logo-spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+/* Tiles */
+
+.tiles {
+  background-color: whitesmoke;
+  border: 1px solid #e6e9ef;
+  max-width: 200px;
+}
+
+.center {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+#stockbox {
+  border: 1px solid black;
+  max-width: 1000px;
+  min-height: 500px;
+  background-color:grey;
+  margin-top: 5%;
+}
+
+#stockchart {
+  border: 1px solid green;
+  min-width: 800px;
+  min-height: 499px;
+  background-color: rgb(95, 95, 99);
+}
