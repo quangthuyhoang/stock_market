@@ -24,7 +24,9 @@
   },
   "homepage": "https://github.com/quangthuyhoang/stock_market#readme",
   "devDependencies": {
+    "chart.js": "^2.7.1",
     "dotenv": "^5.0.0",
-    "jest-cli": "^22.3.0"
+    "jest-cli": "^22.3.0",
+    "react-chartjs-2": "^2.7.0"
   }
 }
