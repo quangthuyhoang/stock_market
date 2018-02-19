@@ -7,7 +7,7 @@ class StockBox extends Component {
  render() {
      return (
         <div id="stockbox" className="center">
-            <StockChart />
+            <StockChart data={this.props.chartData}/>
             <StockList />
         </div>
      )

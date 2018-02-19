@@ -12,26 +12,28 @@ class App extends Component {
     this.state = {
       company: [],
       seed: seed,
-      data: {},
+      data: [],
     }
   }
   componentDidMount() {
-    // var a = "hello";
-    // fetch(a).then(commons.test)
-    // .then(function(str) {
-    //   console.log("its in appjs now",str)
-    // })
-    fetch(this.props.url).then(commons.checkStatus)
-    .then(commons.toArray)
-    .then((data) => {
-      console.log("in appjs",typeof data, data)
-      // var newData = {symbol: data["Meta Data"]["2. Symbol"]}
-      this.setState({data: data}, function() {
-        console.log("state data has been set")
-      })
-    }).catch(function(error) {
-      console.log("There's some kind of error:", error);
-  });
+    // dev purppose only
+    const data = commons.toArray(seed)
+    this.setState({data: data}, function() {
+      console.log("data has been set")
+    })
+
+    // production code
+    // fetch(this.props.url)
+  //   .then(commons.checkStatus)
+  //   .then(commons.toArray)
+  //   .then((data) => {
+
+  //     this.setState({data: data}, function() {
+  //       console.log("state data has been set")
+  //     })
+  //   }).catch(function(error) {
+  //     console.log("There's some kind of error:", error);
+  // });
   }
 
   getStockData(url) {
@@ -54,13 +56,14 @@ class App extends Component {
   render() {
     var data = "";
     console.log("before",this.state.data)
-    if(this.state.data && this.state.data["Meta Data"]) {
-      console.log("1", this.state.data["Meta Data"])
-      data = this.state.data["Meta Data"]["2. Symbol"];
+    if(this.state.data && this.state.data.length > 2) {
+      console.log("1", this.state.data[0])
+      data = this.state.data[0].symbol;
+      var timeseries = commons.timeSeries(this.state.data).slice(0,10)
+      console.log(timeseries)
     }
+
     
- 
-    // const symbol = data["Meta Data"]["2. Symbol"];
 
     return (
       <div className="App">
@@ -69,7 +72,7 @@ class App extends Component {
           <h1 className="App-title">Stock Market Watch - All Things Tech</h1>
         </header>
         
-        <StockBox />
+        <StockBox chartData={this.state.data}/>
         <p>
           {data}
         </p>
