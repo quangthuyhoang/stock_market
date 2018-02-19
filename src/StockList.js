@@ -44,8 +44,8 @@ class StockList extends Component {
 
  render() {
  
-    var listr = stockList.map((company) => {
-        return <Comapny name={company.company} symbol={company.symbol} /> 
+    var listr = stockList.map((company, i) => {
+        return <Comapny key={i} name={company.company} symbol={company.symbol} /> 
     })
      return (
         <div className="stocklist right">
