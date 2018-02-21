@@ -18,13 +18,20 @@ module.exports = {
                 // },
                 ticks: {
                     fontColor: "white",
+                    autoSkip: false
                 }
             }],
             xAxes: [{
+                ticks: {
+                    autoSkip: false,
+                    maxRotation: 90,
+                    minRotation: 90
+                },
                 scaleLabel: {
                     display: true,
                     labelString: 'Time',
                     fontColor: "white",
+                    // minRotation = 90
                 },
                 gridLines: {
                     color: "rgba(0, 0, 0, 0)",
@@ -32,7 +39,7 @@ module.exports = {
                 ticks: {
                     fontColor: "white",
                     fontSize: 14,
-                    // stepSize: 1,
+                    stepSize: 1,
                     // beginAtZero: true
                 }
             }]

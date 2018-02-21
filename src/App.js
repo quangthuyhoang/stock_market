@@ -5,6 +5,9 @@ import StockBox from './StockBox';
 import StockChart from './StockChart';
 import commons from './commons';
 import seed from './seed';
+const toChartDataSet = require('./commons').chartDataSet;
+const isNumber = require('./commons').isNumber;
+
 
 class App extends Component {
   constructor(props) {
@@ -36,6 +39,11 @@ class App extends Component {
   // });
   }
 
+  timeSeries() {
+    var timeseries = commons.timeSeries(this.state.data).slice(0,10);
+    return timeseries;
+  }
+
   getStockData(url) {
     fetch(url).then(function(response) {
       if(response.status !== 200 || !response.ok) {
@@ -46,23 +54,35 @@ class App extends Component {
       return response.json();
     })
     .then((data) => {
-      console.log(data)
+      // console.log(data)
       this.setState({data: data})
     }).catch(function(error) {
       console.log("There's some kind of error:", error);
   });
   }
 
+  chartDataSet() {
+    
+    var stock = this.state.data
+    const ydata = stock.splice(1,10).map(function(obj) {
+      return obj.stock["4. close"];
+    })
+    // console.log("char")
+    console.log("timeseries", this.timeSeries(), "data", isNumber(ydata), "color", "yellow")
+    return toChartDataSet(this.timeSeries(), isNumber(ydata), "yellow")
+  }
+
   render() {
     var data = "";
-    console.log("before",this.state.data)
+    // console.log("before",this.state.data)
     if(this.state.data && this.state.data.length > 2) {
-      console.log("1", this.state.data[0])
-      data = this.state.data[0].symbol;
-      var timeseries = commons.timeSeries(this.state.data).slice(0,10)
-      console.log(timeseries)
+      this.timeSeries();
+      // console.log("1", this.state.data[0])
+      // data = this.state.data[0].symbol;
+      // var timeseries = commons.timeSeries(this.state.data).slice(0,10)
+      // console.log(timeseries)
     }
-
+    console.log(this.chartDataSet())
     
 
     return (
@@ -72,7 +92,7 @@ class App extends Component {
           <h1 className="App-title">Stock Market Watch - All Things Tech</h1>
         </header>
         
-        <StockBox chartData={this.state.data}/>
+        <StockBox chartData={this.chartDataSet()} timeseries={this.timeSeries()}/>
         <p>
           {data}
         </p>
