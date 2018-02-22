@@ -1,3 +1,6 @@
+require('dotenv').config({path: '../'})
+
+
 function resolved(result) {
     console.log("Issue has been resolved");
     return result;
@@ -108,41 +111,90 @@ module.exports = {
         return arr;
     },
 
+    // Converts array of incoming time series to shorter format 'm.dd' ex Jan 30 => 1.30
     timeSeries: function(arr) {
         const len = arr.length;
         const stocks = arr.slice(1, len + 1)
         var data = stocks.map(function(stock) {
-            return stock.dates
-            return stock.split("-")[1] + "." +stock.split("-")[2]
+            if(stock.dates.split("-")[1][0] === "0") {
+                return stock.dates.split("-")[1][1] + "." +stock.dates.split("-")[2]
+            }
+            return stock.dates.split("-")[1] + "." +stock.dates.split("-")[2]
         });
 
         return data;
     },
     
+    // converts incoming array to numbers array
     isNumber: function(arr) {
         return arr.map((el) => {
             return Number(el);
         })
     },
 
+    // returns dataset object to be used in chart
     chartDataSet: function(label, ydata, color) {
         var dataset = new Dataset(label, ydata, color)
         return dataset;
-        
     },
 
-    getData: function(url) {
-        fetch(url)
-        .then(checkstatus)
-        .then( (data) => {
-            
-            if(!data) {
-                console.log("data fail")
-                return;
+    // Check if str matches any in array
+    matchAny: function(str, arr) {
+        for(let i = 0; i < arr.length; i++) {
+            if(str.toUpperCase() === arr[i].toUpperCase()) {
+                return true;
             }
+        }
+        return false;
+    },
 
-            console.log("successfully got data", data.json())
-            return data.json;
-        })
+    // get data from 
+    getData: function(fn, interval, symbol) {
+
+        const supportedFunction = ['TIME_SERIES', 'DIGITAL_CURRENCY'];
+        const supportedInterval = ['DAILY', 'WEEKLY', 'MONTHLY'];
+        const key = process.env.stockAPIKey;
+        console.log(process.env.stockAPIKey)
+
+        // check function
+        if( !fn ) {
+            console.log("There's been an error with function input")
+            return "Error"
+        }
+        // check interval
+        if( !interval ) {
+            console.log("There's been an error with interval")
+            return "Error"
+        }
+        // check symbol
+        if( !symbol ) {
+            console.log("There's been an error with symbol")
+            return "Error"
+        }
+        // checkkey
+        if( !key) {
+            console.log("There's been an error with api key", key)
+            return "Error"
+        }
+
+        // Check if input matches to supported inputs
+        if(!this.matchAny(fn, supportedFunction) || !this.matchAny(interval, supportedInterval)) {
+            console.log("Error", fn, "function or", interval, "is not supported.")
+            throw "Error - not supported"
+        }
+
+        const url = "https://www.alphavantage.co/query?function="+ fn + "_" + interval + "&symbol=" + symbol + "&apikey=" + key;
+        return fetch(url)
+        // .then(checkstatus)
+        // .then( (data) => {
+            
+        //     if(!data) {
+        //         console.log("data fail")
+        //         return;
+        //     }
+
+        //     console.log("successfully got data", data.json())
+        //     return data.json;
+        // })
     }
 }

@@ -4,6 +4,8 @@ const seed = require('./src/seed');
 
 var toArrayResult = commons.toArray(seed);
 var chartDataSetResult = commons.chartDataSet("testname", [1,2,3,4,5], "yellow");
+var timeSeriesResult = commons.timeSeries(toArrayResult)
+const timeSeriesLength = timeSeriesResult[0].length;
 
 describe("commons", function() {
     describe("toArray function", function() {
@@ -33,8 +35,14 @@ describe("commons", function() {
             assert.lengthOf(chartDataSetResult.data, 5)
         });
 
-        it('Should have have testname for label', () => {
+        it('Should have testname for label', () => {
             assert.equal(chartDataSetResult.label, "testname")
+        })
+    })
+
+    describe("timeSeries function", () => {
+        it('Should have element string with length less than 6', () => {
+            assert.isBelow(timeSeriesLength, 6)
         })
     })
 })

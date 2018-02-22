@@ -5,27 +5,51 @@ import StockBox from './StockBox';
 import StockChart from './StockChart';
 import commons from './commons';
 import seed from './seed';
+require('dotenv').config();
 const toChartDataSet = require('./commons').chartDataSet;
 const isNumber = require('./commons').isNumber;
 
+
+const listr = [{
+  company: "Microsoft",
+  symbol: "MSFT"
+},
+// {
+//   company: "Tesla",
+//   symbol: "TSLA"
+// }
+]
 
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      company: [],
+      company: listr,
       seed: seed,
       data: [],
+      xAxis: ["2000-01-14", "2000-01-21", "2000-01-28", "2000-02-04", "2000-02-11", "2000-02-18", "2000-02-25", "2000-03-03", "2000-03-10", "2000-03-17", "2000-03-23"],
     }
   }
-  componentDidMount() {
+  componentWillMount() {
     // dev purppose only
+    // console.log("hello", process.env.REACT_APP_stockAPIKey)
+    // var p = commons.getData('TIME_SERIES', 'WEEKLY', "TLSA");
+    // console.log("p",p)
+    // p.then(commons.checkStatus)
+    //   .then(commons.toArray)
+    //   .then((data) => {
+    //     this.setState({data: data}, function() {
+    //       console.log("data has been set")
+    //       this.timeSeries()
+    //     })
+    //   })
     const data = commons.toArray(seed)
     this.setState({data: data}, function() {
       console.log("data has been set")
+      this.timeSeries()
     })
 
-    // production code
+    // **** PRODUCTION CODE DO NOT DELETE ********
     // fetch(this.props.url)
   //   .then(commons.checkStatus)
   //   .then(commons.toArray)
@@ -40,10 +64,20 @@ class App extends Component {
   }
 
   timeSeries() {
-    var timeseries = commons.timeSeries(this.state.data).slice(0,10);
+    var timeseries = commons.timeSeries(this.state.data).slice(0,20);
+    this.setState({xAxis: timeseries}, () => {
+      console.log("timeseries, now chartdataset", this.state.xAxis)
+      this.chartDataSet();
+    })
+  }
+
+
+  xAxisHandler(data) {
+    var timeseries = commons.timeSeries(data).slice(0,20);
     return timeseries;
   }
 
+  // Will be used later for api data // **** PRODUCTION CODE DO NOT DELETE ********
   getStockData(url) {
     fetch(url).then(function(response) {
       if(response.status !== 200 || !response.ok) {
@@ -55,7 +89,8 @@ class App extends Component {
     })
     .then((data) => {
       // console.log(data)
-      this.setState({data: data})
+      const xAxis = this.timeSeries2(data)
+      this.setState({data: data, xAxis: xAxis})
     }).catch(function(error) {
       console.log("There's some kind of error:", error);
   });
@@ -64,27 +99,17 @@ class App extends Component {
   chartDataSet() {
     
     var stock = this.state.data
-    const ydata = stock.splice(1,10).map(function(obj) {
+    const ydata = stock.splice(1,15).map(function(obj) {
       return obj.stock["4. close"];
     })
     // console.log("char")
-    console.log("timeseries", this.timeSeries(), "data", isNumber(ydata), "color", "yellow")
-    return toChartDataSet(this.timeSeries(), isNumber(ydata), "yellow")
+    // console.log("timeseries", this.state.xAxis, "data", isNumber(ydata), "color", "yellow")
+    return toChartDataSet("MSFT", isNumber(ydata), "yellow")
   }
 
   render() {
-    var data = "";
-    // console.log("before",this.state.data)
-    if(this.state.data && this.state.data.length > 2) {
-      this.timeSeries();
-      // console.log("1", this.state.data[0])
-      // data = this.state.data[0].symbol;
-      // var timeseries = commons.timeSeries(this.state.data).slice(0,10)
-      // console.log(timeseries)
-    }
-    console.log(this.chartDataSet())
     
-
+    
     return (
       <div className="App">
         <header className="App-header">
@@ -92,9 +117,9 @@ class App extends Component {
           <h1 className="App-title">Stock Market Watch - All Things Tech</h1>
         </header>
         
-        <StockBox chartData={this.chartDataSet()} timeseries={this.timeSeries()}/>
+        <StockBox chartData={this.chartDataSet()} timeseries={this.state.xAxis} stockList={this.state.company}/>
         <p>
-          {data}
+          {/* {data} */}
         </p>
       </div>
     );
