@@ -2,37 +2,6 @@ import React, { Component } from 'react';
 import './App.css';
 import Comapny from './Company';
 
-// const stockList = [
-//     {
-//         company: "Microsoft",
-//         symbol: "MSFT"
-//     },
-//     {
-//         company: "Tesla",
-//         symbol: "TSLA"
-//     },
-//     {
-//         company: "Ford Motors",
-//         symbol: "F"
-//     },
-//     {
-//         company: "General Motors",
-//         symbol: "GM"
-//     },
-//     {
-//         company: "Apple",
-//         symbol: "AAPL"
-//     },
-//     {
-//         company: "Facebook",
-//         symbol: "FB"
-//     },
-//     {
-//         company: 'Amazon',
-//         symbol: "AMZN"
-//     }
-// ]
-
 class StockList extends Component {
     constructor(props) {
         super(props);
@@ -45,10 +14,10 @@ class StockList extends Component {
  render() {
 
     var listr = this.props.stockList.map((company, i) => {
-        return <Comapny key={i} name={company.name} symbol={company.symbol} /> 
+        return <Comapny key={i} name={company.name} symbol={company.symbol} industry={company.industry} /> 
     })
      return (
-        <div className="stocklist right">
+        <div id="stocklist" className="center">
             {listr}
         </div>
      )

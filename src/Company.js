@@ -12,8 +12,10 @@ class Company extends Component {
 
  render() {
      return (
-        <div className="tiles center">
-          <p>{this.props.name} : {this.props.symbol}</p>
+        <div className="tiles">
+            <span><span className="symbol" >{this.props.symbol}</span><a href="#" class="close-thik"></a></span>
+        
+          <p className="description">{this.props.name}: {this.props.industry}</p>
         </div>
      )
   

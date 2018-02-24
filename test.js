@@ -1,12 +1,13 @@
 const assert = require('chai').assert;
 const commons = require('./src/commons');
-const seed = require('./src/seed');
+const seed = require('./src/reference/seed');
 
 var toArrayResult = commons.toArray(seed);
 var chartDataSetResult = commons.chartDataSet("testname", [1,2,3,4,5], "yellow");
 var timeSeriesResult = commons.timeSeries(toArrayResult)
 const timeSeriesLength = timeSeriesResult[0].length;
-const getDataResult = commons.getData("TIME_SERIES", "DAILY", "MFST").length
+// const getDataResult = commons.getData("TIME_SERIES", "DAILY", "MFST").length
+const createCompanyResult = commons.createCompany('TSLA');
 
 describe("commons", function() {
     describe("toArray function", function() {
@@ -48,7 +49,9 @@ describe("commons", function() {
     })
 
     describe("createCompany function", function() {
-        it("Should return an object ")
+        it("Should return a company name", () => {
+            assert.equal(createCompanyResult.name.trim(), 'Tesla, Inc.')
+        })
     })
 
     // describe("getData function", () => {

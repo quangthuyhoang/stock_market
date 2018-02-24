@@ -1,5 +1,6 @@
 .App {
   text-align: center;
+  background-color: whitesmoke;
 }
 
 .App-logo {
@@ -27,13 +28,7 @@
   to { transform: rotate(360deg); }
 }
 
-/* Tiles */
 
-.tiles {
-  background-color: whitesmoke;
-  border: 1px solid #e6e9ef;
-  max-width: 200px;
-}
 
 .center {
   text-align: center;
@@ -49,7 +44,7 @@
 }
 
 #stockbox {
-  border: 1px solid black;
+  border: 0px solid black;
   max-width: 1000px;
   min-height: 500px;
   background-color:grey;
@@ -57,8 +52,59 @@
 }
 
 #stockchart {
-  border: 1px solid green;
-  min-width: 800px;
+  border: 0px solid green;
+  min-width: 1000px;
   min-height: 499px;
   background-color: rgb(95, 95, 99);
+}
+
+/* Stock List */
+
+#stocklist {
+  min-height: 100px;
+  max-width: 1000px;
+  background-color: rgb(95, 95, 99);
+  text-align: left;
+  /* padding-left: px; */
+}
+
+/* Tiles */
+
+.tiles {
+  background-color: whitesmoke;
+  border: 1px solid #e6e9ef;
+  min-width: 215px;
+  max-width: 300px;
+  height: 80px;
+  padding: 10px;
+  margin-top: 3px; 
+  margin-bottom: 3px;  
+  margin-left: 8px;
+  position: relative;
+  display: inline-block;
+  overflow:hidden;
+ 
+}
+
+[class*='close-'] {
+  color: #777;
+  font: 14px/100% arial, sans-serif;
+  position: absolute;
+  right: 5px;
+  text-decoration: none;
+  text-shadow: 0 1px 0 #fff;
+  top: 5px;
+}
+
+.close-thik:after {
+  content: '✖'; /* UTF-8 symbol */
+}
+
+.symbol {
+  font: 25px/100% sans-serif;
+  margin-top: 15px;
+}
+
+.description {
+  font: 16px san-serif;
 }

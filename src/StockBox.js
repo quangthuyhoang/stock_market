@@ -16,7 +16,7 @@ class StockBox extends Component {
      return (
         <div id="stockbox" className="center">
             <StockChart data={this.props.chartData} xAxis={this.props.timeseries}/>
-            <StockList stockList={this.props.stockList}/>
+            {/* <StockList stockList={this.props.stockList}/> */}
         </div>
      )
   

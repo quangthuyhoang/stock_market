@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import StockBox from './StockBox';
 import StockChart from './StockChart';
+import StockList from "./StockList.js";
 import commons from './commons';
 import seed from './reference/seed';
 import AddBox from "./AddBox";
@@ -11,14 +12,9 @@ const toChartDataSet = require('./commons').chartDataSet;
 const isNumber = require('./commons').isNumber;
 
 
-const listr = [{
-  name: "Microsoft",
-  symbol: "MSFT"
-},
-{
-  name: "Tesla",
-  symbol: "TSLA"
-}
+const listr = [
+  {"symbol":"MSFT","name":"Microsoft Corporation","sector":"Technology","industry":"Computer Software: Prepackaged Software"},
+  {"symbol":"TSLA","name":"Tesla, Inc.","sector":"Capital Goods","industry":"Auto Manufacturing"}
 ]
 
 class App extends Component {
@@ -105,7 +101,8 @@ class App extends Component {
           <h1 className="App-title">Stock Market Watch - All Things Tech</h1>
         </header>
         
-        <StockBox chartData={this.chartDataSet()} timeseries={this.state.xAxis} stockList={this.state.companyList}/>
+        <StockBox chartData={this.chartDataSet()} timeseries={this.state.xAxis} />
+        <StockList stockList={this.state.companyList}/>
         <AddBox onHandleSubmit={this.updateListhandler}/>
         <p>
           {/* {data} */}
