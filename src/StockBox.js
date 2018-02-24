@@ -3,6 +3,7 @@ import './App.css';
 import StockList from "./StockList.js";
 import StockChart from "./StockChart";
 
+
 class StockBox extends Component {
     constructor(props) {
         super(props);

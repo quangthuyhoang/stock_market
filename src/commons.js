@@ -1,5 +1,5 @@
-require('dotenv').config({path: '../'})
-
+const env = require('./env');
+const nasdaq = require('./reference/nasdaqStockInfo');
 
 function resolved(result) {
     console.log("Issue has been resolved");
@@ -97,15 +97,16 @@ module.exports = {
         if(!data) {
             return;
         }
-
+        console.log(Object.keys(data))
+        const timeSeriesInterval = Object.keys(data)[1];
         const init = {symbol: data["Meta Data"]['2. Symbol']};        
-        const weeklyTimeSeries = data["Weekly Time Series"];
-        const keyDates = Object.keys(weeklyTimeSeries).sort();
+        const timeSeries = data[timeSeriesInterval];
+        const keyDates = Object.keys(timeSeries).sort();
         
         if(keyDates.length > 1) {
             arr.push(init);
             for(var i = 0; i < keyDates.length; i++) {
-                arr.push({dates: keyDates[i], stock: weeklyTimeSeries[keyDates[i]]})
+                arr.push({dates: keyDates[i], stock: timeSeries[keyDates[i]]})
             }
         }
         return arr;
@@ -148,14 +149,24 @@ module.exports = {
         return false;
     },
 
+    createCompany: function(ticker) {
+      
+        for(let i = 0; i < nasdaq.length; i++ ) {
+            if(nasdaq[i].symbol === ticker) {
+                return nasdaq[i]
+            }
+        }
+
+        return {error: "No Result"}
+    },
+
     // get data from 
     getData: function(fn, interval, symbol) {
 
         const supportedFunction = ['TIME_SERIES', 'DIGITAL_CURRENCY'];
         const supportedInterval = ['DAILY', 'WEEKLY', 'MONTHLY'];
-        const key = process.env.stockAPIKey;
-        console.log(process.env.stockAPIKey)
-
+        const key = env.stockAPIKey;
+        
         // check function
         if( !fn ) {
             console.log("There's been an error with function input")
@@ -184,6 +195,9 @@ module.exports = {
         }
 
         const url = "https://www.alphavantage.co/query?function="+ fn + "_" + interval + "&symbol=" + symbol + "&apikey=" + key;
+        
+        // const url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=MFST&apikey=7LTFIJMN4W4GZFOT"
+
         return fetch(url)
         // .then(checkstatus)
         // .then( (data) => {

@@ -6,6 +6,7 @@ var toArrayResult = commons.toArray(seed);
 var chartDataSetResult = commons.chartDataSet("testname", [1,2,3,4,5], "yellow");
 var timeSeriesResult = commons.timeSeries(toArrayResult)
 const timeSeriesLength = timeSeriesResult[0].length;
+const getDataResult = commons.getData("TIME_SERIES", "DAILY", "MFST").length
 
 describe("commons", function() {
     describe("toArray function", function() {
@@ -45,4 +46,14 @@ describe("commons", function() {
             assert.isBelow(timeSeriesLength, 6)
         })
     })
+
+    describe("createCompany function", function() {
+        it("Should return an object ")
+    })
+
+    // describe("getData function", () => {
+    //     it('Should return a promise', () => {
+    //         assert.equal(getDataResult, 1000)
+    //     })
+    // })
 })
