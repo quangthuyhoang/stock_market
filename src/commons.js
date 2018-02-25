@@ -10,6 +10,20 @@ function rejected(result) {
     console.log("error:", result)
 }
 
+function matchAny(str, arr) {
+    if(!str  ) {
+        console.log("Error: no input for matchAny function")
+        return;
+    }
+
+    for(let i = 0; i < arr.length; i++) {
+        if(str.toUpperCase() === arr[i].toUpperCase()) {
+            return true;
+        }
+    }
+    return false;
+};
+
 
 function checkstatus(response) {
     if(response.status !== 200 || !response.ok) {
@@ -43,41 +57,25 @@ var Dataset = function(label, data, color) {
     self.pointHitRadius= 10;
 
     // methods
+    self.updateLabel = function(label) {
+        self.label = label
+    };
 
+    self.updateData = function(data) {
+        self.data = data;
+    }
 
-    self.gen = function() {
-        return {
-            label: self.label,
-            fill: false,
-            lineTension: 0.1,
-            backgroundColor: self.color,
-            borderColor: self.color,
-            borderCapStyle: 'butt',
-            borderDash: [],
-            borderDashOffset: 0.0,
-            borderJoinStyle: 'miter',
-            pointBorderColor: self.color,
-            pointBackgroundColor: '#fff',
-            pointBorderWidth: 1,
-            pointHoverRadius: 5,
-            pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-            pointHoverBorderColor: 'rgba(220,220,220,1)',
-            pointHoverBorderWidth: 2,
-            pointRadius: 1,
-            pointHitRadius: 10,
-            data: self.data
-        }
+    self.updateColor = function(color) {
+        self.backgroundColor= color;
+        self.borderColor = color;
+        self.pointBorderColor = color;
+        self.pointBackgroundColor= color;
     }
 }
 
 
 
 module.exports = {
-
-    test: function(input) {
-        console.log("test",input);
-        return input;
-    },
 
     checkStatus: function(response) {
         if(response.status !== 200 || !response.ok) {
@@ -92,37 +90,46 @@ module.exports = {
         
     },
 
-    toArray: function(data) {
-        var arr = []
-        if(!data) {
+    parser: function(data) {
+        // Error handler
+        if(!data || typeof data !== 'object' || !data["Meta Data"] ) {
             return;
         }
-        console.log(Object.keys(data))
-        const timeSeriesInterval = Object.keys(data)[1];
-        const init = {symbol: data["Meta Data"]['2. Symbol']};        
-        const timeSeries = data[timeSeriesInterval];
-        const keyDates = Object.keys(timeSeries).sort();
+
+        // Declares variables & constants
+        const refLimit = {'DAILY': 365, 'WEEKLY': 52, 'MONTHLY': 12};
+        const intLen = Object.keys(data)[1];
+        const limit = refLimit[intLen.split(" ")[0].toUpperCase()];
+        const timeSeries = data[intLen];
+        const keyDates = Object.keys(timeSeries).splice(0,limit);
+        var arr = [];
         
+        // Create final parsed object
         if(keyDates.length > 1) {
-            arr.push(init);
             for(var i = 0; i < keyDates.length; i++) {
                 arr.push({dates: keyDates[i], stock: timeSeries[keyDates[i]]})
             }
         }
-        return arr;
+
+        const init = {symbol: data["Meta Data"]['2. Symbol']};   
+        init.data = arr;
+  
+        return init;
     },
 
-    // Converts array of incoming time series to shorter format 'm.dd' ex Jan 30 => 1.30
+    // Converts array time series to shorter format 'm.dd' ex Jan 30 => 1.30
     timeSeries: function(arr) {
+     
         const len = arr.length;
-        const stocks = arr.slice(1, len + 1)
+        const stocks = arr;
         var data = stocks.map(function(stock) {
+            
             if(stock.dates.split("-")[1][0] === "0") {
-                return stock.dates.split("-")[1][1] + "." +stock.dates.split("-")[2]
+                return stock.dates.split("-")[1][1] + "." +stock.dates.split("-")[2] // year + "." + stock.dates.split("-")[0]
             }
-            return stock.dates.split("-")[1] + "." +stock.dates.split("-")[2]
+            return stock.dates.split("-")[1] + "." +stock.dates.split("-")[2] // year+ "." + stock.dates.split("-")[0]
         });
-
+   
         return data;
     },
     
@@ -133,20 +140,25 @@ module.exports = {
         })
     },
 
-    // returns dataset object to be used in chart
-    chartDataSet: function(label, ydata, color) {
-        var dataset = new Dataset(label, ydata, color)
-        return dataset;
-    },
-
-    // Check if str matches any in array
-    matchAny: function(str, arr) {
+     // Check if str matches any in array
+     matchAny: function(str, arr) {
+            if(!str || arr.length < 2 ) {
+                console.log("Error: no input for matchAny function")
+            return;
+        }
+    
         for(let i = 0; i < arr.length; i++) {
             if(str.toUpperCase() === arr[i].toUpperCase()) {
                 return true;
             }
         }
         return false;
+    },
+
+    // returns dataset object to be used in chart
+    chartDataSet: function(label, ydata, color) {
+        var dataset = new Dataset(label, ydata, color)
+        return dataset;
     },
 
     createCompany: function(ticker) {
@@ -157,11 +169,57 @@ module.exports = {
             }
         }
 
-        return {error: "No Result"}
+        return {error: "Could not find matching result"}
+    },
+
+    getRandomColor: function() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+          color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    },
+
+    getStockDataType: function(arr, type) {
+        console.log("inside getStockDatatype func", "type", type, arr)
+        // Acceptable type values
+        const refType = ['open', 'high','low', 'close', 'volume', 'OHLC'];
+        const refNum = ["1. ", "2. ", "3. ", "4. ", "5. "]
+        // Verifies input type
+        // console.log("inside getstockdatatype",this)
+        if(!matchAny(type, refType)) {
+            console.log("Inside getStockDataType function: input type did not match stock data type.")
+            return;
+        }
+        
+        var newArr = [];
+
+        // *** FOR POTENTIAL FUTURE USE ****
+        // if(type === 'OHLC') {
+        //     arr.map(function(interval) {
+        //         for(let i = 0; i < 4; i++) {
+        //            var k = refNum[i] + refType[i];
+        //            interval[k]
+        //         }
+        //         return interval.stock
+        //     })
+        //     return;
+        // }
+             // *** ******* ****
+
+        const  k = refNum[refType.indexOf(type)] + type;
+
+        // create final array of stock data for specific type
+        for(let i = 0; i < arr.length; i++) {
+            newArr.push(parseFloat(arr[i].stock[k]))
+        }
+
+        return newArr
     },
 
     // get data from 
-    getData: function(fn, interval, symbol) {
+    fetchData: function(fn, interval, symbol) {
 
         const supportedFunction = ['TIME_SERIES', 'DIGITAL_CURRENCY'];
         const supportedInterval = ['DAILY', 'WEEKLY', 'MONTHLY'];
@@ -189,26 +247,14 @@ module.exports = {
         }
 
         // Check if input matches to supported inputs
+        console.log("inside fetch",this)
         if(!this.matchAny(fn, supportedFunction) || !this.matchAny(interval, supportedInterval)) {
             console.log("Error", fn, "function or", interval, "is not supported.")
             throw "Error - not supported"
         }
 
         const url = "https://www.alphavantage.co/query?function="+ fn + "_" + interval + "&symbol=" + symbol + "&apikey=" + key;
-        
-        // const url = "https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY&symbol=MFST&apikey=7LTFIJMN4W4GZFOT"
 
         return fetch(url)
-        // .then(checkstatus)
-        // .then( (data) => {
-            
-        //     if(!data) {
-        //         console.log("data fail")
-        //         return;
-        //     }
-
-        //     console.log("successfully got data", data.json())
-        //     return data.json;
-        // })
     }
 }

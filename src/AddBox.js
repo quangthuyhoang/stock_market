@@ -19,11 +19,11 @@ class AddBox extends Component {
 
 	handleSubmit(e) {
         e.preventDefault();
-        console.log("submit", e.keyCode)
+
 		if(e.keyCode !== 13){
 			return;
 		}
-		console.log(this.state.query)
+		console.log(this.state.input)
 		this.props.onHandleSubmit(this.state.input)
 	}
     

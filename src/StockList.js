@@ -14,7 +14,7 @@ class StockList extends Component {
  render() {
 
     var listr = this.props.stockList.map((company, i) => {
-        return <Comapny key={i} name={company.name} symbol={company.symbol} industry={company.industry} /> 
+        return <Comapny key={i} name={company.name} symbol={company.symbol} industry={company.industry} id={i} del={this.props.del} /> 
     })
      return (
         <div id="stocklist" className="center">

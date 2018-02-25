@@ -4,116 +4,46 @@ import './App.css';
 import {Line} from 'react-chartjs-2';
 const toTimeSeries = require('./commons').timeSeries;
 const toChartDataSet = require('./commons').chartDataSet;
+const getRandomColor = require('./commons').getRandomColor;
+const getStockDataType = require('./commons').getStockDataType;
 
 
 class StockChart extends Component {
     constructor(props) {
         super(props);
-        this.state = {
-            data: {
-                labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
-                datasets: [
-                  {
-                    label: 'MFST',
-                    fill: false,
-                    lineTension: 0.1,
-                    backgroundColor: 'rgba(75,192,192,1)',
-                    borderColor: 'rgba(75,192,192,1)',
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    pointBorderColor: 'rgba(75,19,192,1)',
-                    pointBackgroundColor: '#fff',
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                    pointHoverBorderColor: 'rgba(220,220,220,1)',
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 1,
-                    pointHitRadius: 10,
-                    data: [65, 59, 80, 81, 56, 55, 40]
-                  },
-                  {
-                    label: 'FB',
-                    fill: false,
-                    lineTension: 0.1,
-                    backgroundColor: 'rgba(75,192,19,1)',
-                    borderColor: 'rgba(75,192,192,1)',
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    pointBorderColor: 'rgba(75,19,192,1)',
-                    pointBackgroundColor: '#fff',
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                    pointHoverBorderColor: 'rgba(220,220,220,1)',
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 1,
-                    pointHitRadius: 10,
-                    data: [6, 80, 80, 1, 56, 55, 40]
-                  }
-                ],
-                options: {}
-            },
+    }
+    // convert list of data to a single array
+    // with Chart Data set Object
+    chartDataHandler(stocktype) {
+        var stock = this.props.stockList;
+        var data = this.props.data;
+        
+        // console.log("chart data handler inside stockChart", "stock", stock, "data", data)
+        var output = [];
 
-            newData: {
-                labels: "",
-                datasets: [
-                  {
-                    label: "MSFT",
-                    fill: false,
-                    lineTension: 0.1,
-                    backgroundColor: 'rgba(75,192,192,0.4)',
-                    borderColor: 'rgba(75,192,192,1)',
-                    borderCapStyle: 'butt',
-                    borderDash: [],
-                    borderDashOffset: 0.0,
-                    borderJoinStyle: 'miter',
-                    pointBorderColor: 'rgba(0,19,19,1)',
-                    pointBackgroundColor: '#fff',
-                    pointBorderWidth: 1,
-                    pointHoverRadius: 5,
-                    pointHoverBackgroundColor: 'rgba(75,192,192,1)',
-                    pointHoverBorderColor: 'rgba(220,220,220,1)',
-                    pointHoverBorderWidth: 2,
-                    pointRadius: 1,
-                    pointHitRadius: 10,
-                    data: [65, 59, 80, 81, 56, 55, 40]
-                  }
-                ]
+        // Check if length is same
+        if(stock.length !== data.length) {
+            console.log("different length")
+            return;
+        }
+        // console.log(stock[0].symbol, data.symbol)
+        // Check if symbols in both list match
+        for(let i = 0; i < stock.length; i++) {
+            for(let j = 0; j < data.length; j++) {
+                if(stock[i].symbol === data[j].symbol) {
+                    // create single dataset array
+                    var chartData = getStockDataType(data[j].data, stocktype)
+                    console.log("matched found", "symbol", data[j].symbol, "data", chartData)
+                    output.push(toChartDataSet(data[j].symbol, chartData, getRandomColor()))
+                }
             }
         }
-
-        // this.addLabels = this.addLabels.bind(this);
-    }
-
-    componentDidMount() {
-
-        const labels = this.props.Axis;
-        const dataset = []
-        dataset.push(this.chartDataSet("facebook", [15, 19, 29, 11, 16, 35, 40, 55, 6, 10], "blue"));
-      
-        dataset.push(this.chartDataSet("MFST", this.props.data.data, this.props.data.backgroundColor));
-        var newData = {labels: labels, datasets: dataset};
-    
-        this.setState({newData: newData}, function() {
-            console.log("newData has been set for StockChart", this.state.newData)
-        })
+        console.log("final chartdatahandler output",output)
+        return output;
     }
 
 
-    // timeSeries(arr) {
-    //     return arr.map(function(str){
-    //         var strArr = str.split("-");
-    //         if(strArr[1][0] === '0') {
-    //             return strArr[1].slice(1) + "." + strArr[2];
-    //         }
-    //         return strArr[1] + "." + strArr[2];
-    //     })
-    // }
+
 
     chartDataSet(company, data, color) {
 
@@ -124,7 +54,8 @@ class StockChart extends Component {
 
     updateData() {
 
-         var labels = this.timeSeries(this.props.xAxis);
+         var labels = this.props.xAxis
+        
 
          const dataset = []
          dataset.push(this.chartDataSet("facebook", [15, 19, 29, 11, 16, 35, 40, 55, 6, 10], "blue"));
@@ -139,15 +70,19 @@ class StockChart extends Component {
 
     
     render() {
+        console.log("inside stockchart, data", this.props.data)
+        const dataset2 = this.chartDataHandler("close")
+        console.log("inside stockchart, data2",dataset2)
         const dataset = []
         dataset.push(this.chartDataSet("facebook", [15, 19, 29, 11, 16, 35, 40, 55, 6, 10], "blue"));
       
         dataset.push(this.chartDataSet(this.props.data.label, this.props.data.data, this.props.data.backgroundColor));
-        var newData = {labels: this.props.xAxis, datasets: dataset};
-      
+        var newData = {labels: this.props.xAxis, datasets: dataset2};
+      console.log("newData",newData, "dataset2", dataset2)
         return (
         <div id="stockchart" className="left">
             <Line data={newData} options={chartOption.op1}/>
+            {/* <Line data={newData} options={chartOption.op1}/> */}
         </div>
         )
      

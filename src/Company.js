@@ -7,15 +7,20 @@ class Company extends Component {
         this.state = {
             data: "",
         }
+
+        this.onExitHandler = this.onExitHandler.bind(this)
     }
 
-
+    onExitHandler() {
+        // console.log(this.props)
+        this.props.del(this.props.id)
+    }
  render() {
      return (
         <div className="tiles">
-            <span><span className="symbol" >{this.props.symbol}</span><a href="#" class="close-thik"></a></span>
+            <span><span className="symbol" >{this.props.symbol}</span><span onClick={this.onExitHandler} className="close-thik"></span></span>
         
-          <p className="description">{this.props.name}: {this.props.industry}</p>
+          <p className="description">{this.props.name} - {this.props.industry}</p>
         </div>
      )
   

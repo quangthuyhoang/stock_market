@@ -12,10 +12,10 @@ class StockBox extends Component {
         }
     }
  render() {
-
+    console.log("inside stockbox. stockList", this.props.stockList, this.props.chartData)
      return (
         <div id="stockbox" className="center">
-            <StockChart data={this.props.chartData} xAxis={this.props.timeseries}/>
+            <StockChart stockList={this.props.stockList} data={this.props.chartData} xAxis={this.props.xAxis}/>
             {/* <StockList stockList={this.props.stockList}/> */}
         </div>
      )

@@ -2,30 +2,45 @@ const assert = require('chai').assert;
 const commons = require('./src/commons');
 const seed = require('./src/reference/seed');
 
-var toArrayResult = commons.toArray(seed);
-var chartDataSetResult = commons.chartDataSet("testname", [1,2,3,4,5], "yellow");
-var timeSeriesResult = commons.timeSeries(toArrayResult)
+var toObjResult = commons.parser(seed); // get initial data obj from fetch
+var timeSeriesResult = commons.timeSeries(toObjResult.data)
 const timeSeriesLength = timeSeriesResult[0].length;
+const dataTypeResult = commons.getStockDataType(toObjResult.data, 'close')
+
+var chartDataSetResult = commons.chartDataSet("testname", [1,2,3,4,5], "yellow"); 
+
 // const getDataResult = commons.getData("TIME_SERIES", "DAILY", "MFST").length
 const createCompanyResult = commons.createCompany('TSLA');
+const colorGenResult = commons.getRandomColor();
+
 
 describe("commons", function() {
-    describe("toArray function", function() {
-        it('Should return an array', function() {
-            assert.typeOf(toArrayResult, "Array")
+    describe("parser function", function() {
+        it('Should return an obj', function() {
+            assert.typeOf(toObjResult, "Object")
         });
 
         it('Should stock symbol', () => {
-            assert.containsAllKeys(toArrayResult[0], ["symbol"])
+            assert.containsAllKeys(toObjResult, ["symbol"])
         });
 
         it('Should contain two key values of dates and stock', () => {
-            assert.containsAllKeys(toArrayResult[1], ["dates", "stock"])
+            assert.containsAllKeys(toObjResult.data[0], ["dates", "stock"])
         });
 
-        it('Should have a length equal to 946', () => {
-            assert.lengthOf(toArrayResult, 946)
+        it('Should have a length equal to 52', () => {
+            assert.lengthOf(toObjResult.data, 52)
         });
+    })
+
+    describe("toDataType function", function() {
+        it("Should return an array type", () => {
+            assert.typeOf(dataTypeResult, 'Array')
+        });
+
+        it('Should have use a specific close type', () => {
+            assert.equal(dataTypeResult[0], 92.66)
+        })
     })
 
     describe("chartDataSet function", ()=> {
@@ -53,6 +68,8 @@ describe("commons", function() {
             assert.equal(createCompanyResult.name.trim(), 'Tesla, Inc.')
         })
     })
+
+    
 
     // describe("getData function", () => {
     //     it('Should return a promise', () => {
