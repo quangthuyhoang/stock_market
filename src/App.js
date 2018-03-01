@@ -5,12 +5,16 @@ import StockBox from './StockBox';
 import StockChart from './StockChart';
 import StockList from "./StockList.js";
 import commons from './commons';
+import onError from './OnError';
 import seed from './reference/seed';
 import seed2 from './reference/seed2';
 import AddBox from "./AddBox";
 
 const toChartDataSet = require('./commons').chartDataSet;
+const getStockDataType = require('./commons').getStockDataType;
 const convert2Number = require('./commons').isNumber;
+const randColor = require('./commons').getRandomColor;
+
 
 
 const listr = [
@@ -34,11 +38,17 @@ class App extends Component {
       data: data,
       // xAxis: ["2000-01-14", "2000-01-21", "2000-01-28", "2000-02-04", "2000-02-11", "2000-02-18", "2000-02-25", "2000-03-03", "2000-03-10", "2000-03-17", "2000-03-23"],
       xAxis: xAxis,
+      option: {
+        intervalLength: "MONTHLY",
+        viewScope: "year",
+        refType: "close",
+        xAxis: "TIME_SERIES"
+      }
     }
 
     this.updateListhandler = this.updateListhandler.bind(this)
     this.removeItem = this.removeItem.bind(this);
-    this.getStockData = this.getStockData.bind(this);
+    // this.getStockData = this.getStockData.bind(this);
   }
   componentDidMount() {
     // dev purppose only
@@ -69,85 +79,57 @@ class App extends Component {
     })
   }
 
-  // Will be used later for api data // **** PRODUCTION CODE DO NOT DELETE ********
-  getStockData(symbol) {
+  // // Will be used later for api data // **** PRODUCTION CODE DO NOT DELETE ********
+  // getStockData(symbol) {
 
-    var p = commons.fetchData('TIME_SERIES', "MONTHLY", symbol);
+  //   var p = commons.fetchData('TIME_SERIES', "MONTHLY", symbol);
   
-    var result = p.then(commons.checkStatus)
-      .then(commons.parser)
-      .then((data) => {
-        return data;
-      })
-      .catch(function(err) {
-        console.log("There's been some kind of error:", err)
-      })
+  //   var result = p.then(commons.checkStatus)
+  //     .then(commons.parser)
+  //     .then((data) => {
+  //       return data;
+  //     })
+  //     .catch(function(err) {
+  //       console.log("There's been some kind of error:", err)
+  //     })
 
-      return result;
-    }
+  //     return result;
+  //   }
 
-  chartDataSet() {
-    // var stock = this.state.data
-    // const ydata = stock.splice(1,15).map(function(obj) {
-    //   return obj.stock["4. close"];
-    // })
-    // return toChartDataSet("FB", convert2Number(ydata), "yellow")
+    updateListhandler(symbol) {
 
-    // 
-    const currList = this.state.companyList;
-    
-    var newDataset = currList.map(function(company) {
-   
-        var result = this.getStockData(company.symbol);
-        const symbol = result.shift();
-
-        const data = result.map(function(obj) {
-          return obj.stock["4. close"];
-        })
-
-        return toChartDataSet(symbol, convert2Number(data), "blue")
-    })
-
-    this.setState({data: newDataset})
-  }
-
-  // CRUD methods
-  // Add Item
-
-  updateListhandler(symbol) {
-    // checks if symbol is null or undefined
-    if(!symbol || symbol.length < 1) {
-      console.log("error with addtoListHandler input")
-      return;
-    }
-    // check if company already on list
+    const sym = symbol;
     var newList = this.state.companyList;
-    for(let j = 0; j < newList.length; j++) {
-      if(newList[j].symbol === symbol) {
-        console.log("Item already exist on the list.")
-        return;
-      }
+    // Error Handler
+    if (onError.isSymListed(sym, newList) || (commons.createCompany(sym).error) ) {
+      console.log(sym, onError.isSymListed(sym, newList), commons.createCompany(sym).error, newList)
+      console.log(sym, "already exist on list or does not exist in Nasdaq list.")
+      return
     }
 
-    // returns object with name, symbol, summary
-    var newComp = commons.createCompany(symbol)
+   commons.fetchData("TIME_SERIES", "MONTHLY", sym)
+      .then(commons.checkStatus)
+      .then(commons.parser)
+      .then((result) => {
+        console.log("inside chartdata - result", result)
+        var newList = this.state.companyList;
+        var newData = this.state.data;
 
-    // Check for errors
-    if(newComp.error) {
-      console.log(newComp.error);
-      return;
-    }
-    
-    // Create new list
-    newList.push(newComp)
-    for(let i = 0; i < newList.length; i++) {
-      newList[i]._id = i
-    }
-       
-    this.setState({companyList: newList}, ()=> {
-      this.chartDataSet()
+        // create new company tile
+        var newComp = commons.createCompany(result.symbol)
+        newList.push(newComp)
+        for(let i = 0; i < newList.length; i++) {
+          newList[i]._id = i
+        }
+        console.log("inside chartdata - newList", newList)
+        // create new Data list
+        newData.push(result)
+        this.setState({companyList: newList, data: newData})
+
     })
   }
+
+
 
     // Remove Item from list
     removeItem(ref) {

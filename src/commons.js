@@ -92,6 +92,7 @@ module.exports = {
 
     parser: function(data) {
         // Error handler
+        console.log("inside parser",data)
         if(!data || typeof data !== 'object' || !data["Meta Data"] ) {
             return;
         }
@@ -188,7 +189,7 @@ module.exports = {
         const refNum = ["1. ", "2. ", "3. ", "4. ", "5. "]
         // Verifies input type
         // console.log("inside getstockdatatype",this)
-        if(!matchAny(type, refType)) {
+        if(!matchAny(type.toLowerCase(), refType)) {
             console.log("Inside getStockDataType function: input type did not match stock data type.")
             return;
         }
@@ -256,5 +257,10 @@ module.exports = {
         const url = "https://www.alphavantage.co/query?function="+ fn + "_" + interval + "&symbol=" + symbol + "&apikey=" + key;
 
         return fetch(url)
+        // .then(this.checkStatus)
+        // .then(this.parser)
+        // .catch(function(err) {
+        //     console.log("Error", err)
+        // })
     }
 }
