@@ -10,13 +10,15 @@
 
 .App-header {
   background-color: #222;
-  height: 70px;
+  min-height: 70px;
   padding: 20px;
   color: white;
 }
 
 .App-title {
   font-size: 1.5em;
+  color: white;
+  padding-top: 10px;
 }
 
 .App-intro {
@@ -28,6 +30,18 @@
   to { transform: rotate(360deg); }
 }
 
+/* Menu */
+.menu {
+  text-align: justify;
+  width: 800px;
+  margin: 0 auto;
+}
+
+.menu-setting {
+  display: inline-block;
+  width: 400px;
+  background-color: rgb(95, 95, 99);
+}
 
 
 .center {
@@ -36,24 +50,25 @@
 }
 
 .right {
-  float: right;
+  text-align: right;
 }
 
 .left {
-  float: left;
+  text-align: left;
 }
 
 #stockbox {
   border: 0px solid black;
   max-width: 1000px;
   min-height: 500px;
-  background-color:grey;
+  background-color:rgb(95, 95, 99);
   margin-top: 5%;
 }
 
 #stockchart {
   border: 0px solid green;
-  min-width: 1000px;
+  /* min-width: 1200px; */
+  width: 100%;
   min-height: 499px;
   background-color: rgb(95, 95, 99);
 }
@@ -66,6 +81,10 @@
   background-color: rgb(95, 95, 99);
   text-align: left;
   /* padding-left: px; */
+}
+
+#addbox {
+  border: 5px solid rgb(52, 224, 52);
 }
 
 /* Tiles */
@@ -107,4 +126,15 @@
 
 .description {
   font: 16px san-serif;
+}
+
+/* settings button */
+.stockTypeBtn {
+  border: 1px solid whitesmoke;
+  background-color: #777;
+  width: 45px;
+  height: 20px;
+  color: white;
+  margin-left: 5px;
+  display: inline-block;
 }

@@ -15,7 +15,7 @@ fix/refine fetch to stock api,
 2. added several new error handllers to common functions script
 
 todos:
-1. Chart will fetch new stock data after add to list
-2. Be able to switch between daily, weekly, and monthly chart type resolution
-3. Be able to zoom between Week, Month, Year xAxis length from most recent
+1. Chart will fetch new stock data after add to list (done 3.1.18)
+2. Be able to switch between daily, weekly, and monthly chart type resolution (kept at daily)
+3. Be able to zoom between Week, Month, Year xAxis length from most recent (next) need to figure out chartjs x-axis
 **future feature add option to configure OHLC average vs Open, high, low, close, or candlestick chart **

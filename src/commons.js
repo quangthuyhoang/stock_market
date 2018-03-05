@@ -25,14 +25,6 @@ function matchAny(str, arr) {
 };
 
 
-function checkstatus(response) {
-    if(response.status !== 200 || !response.ok) {
-        console.log("There's been a bad request or response");
-        return;
-      }
-      
-    return response.json();
-}
 var Dataset = function(label, data, color) {
 
     var self = this;
@@ -50,7 +42,7 @@ var Dataset = function(label, data, color) {
     self.pointBackgroundColor= color || 'rgba(75,192,192,1)';
     self.pointBorderWidth= 1;
     self.pointHoverRadius= 5;
-    self.pointHoverBackgroundColor= 'rgba(75,192,192,1)';
+    self.pointHoverBackgroundColor = color || 'rgba(75,192,192,1)';
     self.pointHoverBorderColor= 'rgba(220,220,220,1)';
     self.pointHoverBorderWidth= 2;
     self.pointRadius= 1;
@@ -98,9 +90,15 @@ module.exports = {
         }
 
         // Declares variables & constants
-        const refLimit = {'DAILY': 365, 'WEEKLY': 52, 'MONTHLY': 12};
+        const refLimit = {'(DAILY)': 365, 'WEEKLY': 52, 'MONTHLY': 12};
+        const refArr = Object.keys(refLimit)
         const intLen = Object.keys(data)[1];
-        const limit = refLimit[intLen.split(" ")[0].toUpperCase()];
+        // const findint = intLen.split(" ")
+    
+        // const limit = refLimit[intLen.split(" ")[0].toUpperCase()];
+        const limit = refLimit["(DAILY)"]
+        // console.log("inside parser - intLen",intLen.split(" ")[0])
+       
         const timeSeries = data[intLen];
         const keyDates = Object.keys(timeSeries).splice(0,limit);
         var arr = [];
@@ -113,22 +111,43 @@ module.exports = {
         }
 
         const init = {symbol: data["Meta Data"]['2. Symbol']};   
-        init.data = arr;
+        init.data = arr.reverse();
   
         return init;
     },
 
     // Converts array time series to shorter format 'm.dd' ex Jan 30 => 1.30
-    timeSeries: function(arr) {
+    timeSeries: function(arr , option) { //interval & scope
+        // Error handlers
+        if(!arr) {
+            console.log("Error: timeseries array input.")
+            return;
+        }
+        if(!option) {
+            option = {
+                interval: "(DAILY)",
+                scope: "1Y"
+            }
+        }
      
+        // const intRef = {
+        //     "1Y": {
+        // 
+        //         "WEEKLY": 52,
+        //         "MONTHLY": 365
+        //     },
+        //     "3M": {
+
+        //     }
+        // }
         const len = arr.length;
         const stocks = arr;
         var data = stocks.map(function(stock) {
             
             if(stock.dates.split("-")[1][0] === "0") {
-                return stock.dates.split("-")[1][1] + "." +stock.dates.split("-")[2] // year + "." + stock.dates.split("-")[0]
+                return stock.dates.split("-")[1][1] + "." +stock.dates.split("-")[2] + "." + stock.dates.split("-")[0] // year + "." + stock.dates.split("-")[0]
             }
-            return stock.dates.split("-")[1] + "." +stock.dates.split("-")[2] // year+ "." + stock.dates.split("-")[0]
+            return stock.dates.split("-")[1] + "." +stock.dates.split("-")[2] + "." + stock.dates.split("-")[0] // year+ "." + stock.dates.split("-")[0]
         });
    
         return data;
@@ -182,13 +201,12 @@ module.exports = {
         return color;
     },
 
-    getStockDataType: function(arr, type) {
-        console.log("inside getStockDatatype func", "type", type, arr)
+    getStockTypeArr: function(arr, type) {
+
         // Acceptable type values
         const refType = ['open', 'high','low', 'close', 'volume', 'OHLC'];
         const refNum = ["1. ", "2. ", "3. ", "4. ", "5. "]
-        // Verifies input type
-        // console.log("inside getstockdatatype",this)
+
         if(!matchAny(type.toLowerCase(), refType)) {
             console.log("Inside getStockDataType function: input type did not match stock data type.")
             return;
@@ -210,7 +228,7 @@ module.exports = {
              // *** ******* ****
 
         const  k = refNum[refType.indexOf(type)] + type;
-
+        console.log(k)
         // create final array of stock data for specific type
         for(let i = 0; i < arr.length; i++) {
             newArr.push(parseFloat(arr[i].stock[k]))
@@ -255,7 +273,7 @@ module.exports = {
         }
 
         const url = "https://www.alphavantage.co/query?function="+ fn + "_" + interval + "&symbol=" + symbol + "&apikey=" + key;
-
+        // const url1 = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=7LTFIJMN4W4GZFOT"
         return fetch(url)
         // .then(this.checkStatus)
         // .then(this.parser)

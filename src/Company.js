@@ -19,8 +19,7 @@ class Company extends Component {
      return (
         <div className="tiles">
             <span><span className="symbol" >{this.props.symbol}</span><span onClick={this.onExitHandler} className="close-thik"></span></span>
-        
-          <p className="description">{this.props.name} - {this.props.industry}</p>
+          <p className="description">{this.props.name} Prices, Stock, and Dividends.</p>
         </div>
      )
   

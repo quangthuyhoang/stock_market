@@ -10,11 +10,14 @@ class AddBox extends Component {
 
 		this.handleInputChange = this.handleInputChange.bind(this);
 		this.handleSubmit = this.handleSubmit.bind(this);
+		this.onClickHandleSubmit = this.onClickHandleSubmit.bind(this)
 	}
 
 	handleInputChange(e) {
         e.preventDefault();
-		this.setState({input: e.target.value})
+		this.setState({input: e.target.value}, ()=> {
+			console.log(this.state.input)
+		})
 	}
 
 	handleSubmit(e) {
@@ -26,13 +29,20 @@ class AddBox extends Component {
 		console.log(this.state.input)
 		this.props.onHandleSubmit(this.state.input)
 	}
+
+	onClickHandleSubmit() {
+		if(!this.state.input) {
+			return;
+		}
+		this.props.onHandleSubmit(this.state.input)
+	}
     
  render() {
 
      return (
-        <div className="addbox">
+        <div id="addbox" className="tiles">
             <input type="text" onChange={this.handleInputChange} onKeyUp={this.handleSubmit} placeholder="MFST"/>
-            <button onClick={this.handleSubmit} >Add</button>
+            <button onClick={this.onClickHandleSubmit} >Add</button>
         </div>
      )
   

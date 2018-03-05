@@ -5,7 +5,7 @@ const seed = require('./src/reference/seed');
 var toObjResult = commons.parser(seed); // get initial data obj from fetch
 var timeSeriesResult = commons.timeSeries(toObjResult.data)
 const timeSeriesLength = timeSeriesResult[0].length;
-const dataTypeResult = commons.getStockDataType(toObjResult.data, 'close')
+const dataTypeResult = commons.getStockTypeArr(toObjResult.data, 'close')
 
 var chartDataSetResult = commons.chartDataSet("testname", [1,2,3,4,5], "yellow"); 
 
@@ -39,7 +39,7 @@ describe("commons", function() {
         });
 
         it('Should have use a specific close type', () => {
-            assert.equal(dataTypeResult[0], 92.66)
+            assert.equal(dataTypeResult[0], 64.62)
         })
     })
 
