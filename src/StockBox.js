@@ -21,19 +21,20 @@ class StockBox extends Component {
         
             <h1 className="App-title">Stock</h1>
             <div className="menu">
-            <div className="menu-setting left">
+            <div className="menu-setting-left">
             {/* <p>Stock Type</p> */}
             <button className="stockTypeBtn" onClick={this.updateView} >1M</button>
             <button className="stockTypeBtn" onClick={this.updateView} >3M</button>
             <button className="stockTypeBtn" onClick={this.updateView} >YTD</button>
             <button className="stockTypeBtn" onClick={this.updateView} >1Y</button>
           </div>
-          <div className="menu-setting right">
+          <div className="menu-setting-right">
             {/* <p>Stock Type a</p> */}
             <button className="stockTypeBtn" onClick={this.stockTypeHandler} >open</button>
             <button className="stockTypeBtn" onClick={this.stockTypeHandler} >close</button>
             <button className="stockTypeBtn" onClick={this.stockTypeHandler} >high</button>
             <button className="stockTypeBtn" onClick={this.stockTypeHandler} >low</button>
+            <button className="stockTypeBtn" onClick={this.stockTypeHandler} >ohlc</button>
           </div>
           </div>
             <StockChart stockList={this.props.stockList} stockType={this.props.option.refType} data={this.props.chartData} xAxis={this.props.xAxis}/>

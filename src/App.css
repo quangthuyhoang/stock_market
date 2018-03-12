@@ -32,14 +32,26 @@
 
 /* Menu */
 .menu {
-  text-align: justify;
-  width: 800px;
+
+  /* text-align: justify; */
+  display: grid;
+  width: 100%;
   margin: 0 auto;
 }
 
-.menu-setting {
+.menu-setting-left {
   display: inline-block;
-  width: 400px;
+  grid-column: 1;
+  /* vertical-align: top; */
+  /* width: 50%; */
+  background-color: rgb(95, 95, 99);
+}
+
+.menu-setting-right {
+  display: inline-block;
+  grid-column: 2;
+  /* vertical-align: top; */
+  /* width: 50%; */
   background-color: rgb(95, 95, 99);
 }
 
@@ -56,6 +68,7 @@
 .left {
   text-align: left;
 }
+
 
 #stockbox {
   border: 0px solid black;
@@ -84,7 +97,8 @@
 }
 
 #addbox {
-  border: 5px solid rgb(52, 224, 52);
+  border-block-start: greenyellow;
+  /* border: 5px solid rgb(52, 224, 52); */
 }
 
 /* Tiles */

@@ -37,7 +37,6 @@ class App extends Component {
       companyList: listr,
       seed: seed,
       data: [],
-      // xAxis: ["2000-01-14", "2000-01-21", "2000-01-28", "2000-02-04", "2000-02-11", "2000-02-18", "2000-02-25", "2000-03-03", "2000-03-10", "2000-03-17", "2000-03-23"],
       xAxis: xAxis,
       option: {
         intervalLength: "DAILY",
@@ -55,7 +54,7 @@ class App extends Component {
   componentDidMount() {
     // dev purppose only
   //  console.log("component did mount")
-  console.log("beofre component did mount", this.state.option.intervalLength)
+  // console.log("beofre component did mount", this.state.option.intervalLength)
     var p = commons.fetchData('TIME_SERIES', this.state.option.intervalLength, listr[0].symbol);
    
     p.then(commons.checkStatus)
@@ -65,7 +64,7 @@ class App extends Component {
         newData.push(data)
         
         this.setState({data: newData}, function() {
-          console.log("component will mount", this.state.data)
+          // console.log("component will mount", this.state.data)
           // this.chartDataSet()
           this.xAxisHandler()
         })
@@ -78,7 +77,7 @@ class App extends Component {
   xAxisHandler() {
     var timeseries = commons.timeSeries(this.state.data[0].data);
     this.setState({xAxis: timeseries}, () => {
-      console.log("xAxis handler invoked", this.state.xAxis)
+      // console.log("xAxis handler invoked", this.state.xAxis)
     })
   }
 
@@ -113,12 +112,16 @@ class App extends Component {
         // create new company tile
         var newComp = commons.createCompany(result.symbol)
         newComp.color = commons.getRandomColor();
+    
         newList.push(newComp)
         for(let i = 0; i < newList.length; i++) {
           newList[i]._id = i
-          console.log(newList[i])
+          // console.log(newList[i])
         }
-  
+
+        let newId = newData.length;
+        result._id = newId;
+        result.description = commons.createCompany(result.symbol)
         // create new Data list
         newData.push(result)
         this.setState({companyList: newList, data: newData})
@@ -133,7 +136,6 @@ class App extends Component {
       const newData = this.state.data;
 
       var newList = currList.filter((company) => {
-        console.log(company, ref)
         return company._id !== ref
       })
   
@@ -157,7 +159,6 @@ class App extends Component {
       var newScope = e.target.innerHTML;
       var nOption = this.state.option;
       nOption.viewScope = newScope;
-      console.log(nOption)
       this.setState({option: nOption})
     }
 
@@ -170,11 +171,8 @@ class App extends Component {
         <StockBox chartData={this.state.data} stockList={this.state.companyList} 
         xAxis={this.state.xAxis} option={this.state.option} intLen={this.state.option.intervalLength}
         stockTypeHandler={this.updateStockType}/>
-        <StockList stockList={this.state.companyList} del={this.removeItem}/>
-        <AddBox onHandleSubmit={this.updateListhandler}/>
-        <p>
-          {/* {data} */}
-        </p>
+        <StockList stockList={this.state.companyList} del={this.removeItem} onHandleSubmit={this.updateListhandler}/>
+ 
       </div>
     );
   }

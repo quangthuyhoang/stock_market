@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import './App.css';
-import Comapny from './Company';
+import Company from './Company';
 import AddBox from './AddBox';
 
 class StockList extends Component {
@@ -15,9 +15,9 @@ class StockList extends Component {
  render() {
 
     var listr = this.props.stockList.map((company, i) => {
-        return <Comapny key={i} name={company.name} symbol={company.symbol} industry={company.industry} id={i} del={this.props.del} /> 
+        return <Company key={i} name={company.name} symbol={company.symbol} industry={company.industry} id={i} del={this.props.del} /> 
     })
-    listr.push(<AddBox />)
+    listr.push(<AddBox onHandleSubmit={this.props.onHandleSubmit}key={listr.length}/>)
      return (
         <div id="stocklist" className="center">
             {listr}

@@ -76,7 +76,7 @@ module.exports = {
           }
           
         if(response.status === 200 || response.ok) {
-            console.log("checkstatus",response)
+            // console.log("checkstatus",response)
             return response.json();
         }
         
@@ -84,13 +84,13 @@ module.exports = {
 
     parser: function(data) {
         // Error handler
-        console.log("inside parser",data)
+
         if(!data || typeof data !== 'object' || !data["Meta Data"] ) {
             return;
         }
 
         // Declares variables & constants
-        const refLimit = {'(DAILY)': 365, 'WEEKLY': 52, 'MONTHLY': 12};
+        const refLimit = {'(DAILY)': 262, 'WEEKLY': 52, 'MONTHLY': 12};
         const refArr = Object.keys(refLimit)
         const intLen = Object.keys(data)[1];
         // const findint = intLen.split(" ")
@@ -204,7 +204,7 @@ module.exports = {
     getStockTypeArr: function(arr, type) {
 
         // Acceptable type values
-        const refType = ['open', 'high','low', 'close', 'volume', 'OHLC'];
+        const refType = ['open', 'high','low', 'close', 'volume', 'ohlc'];
         const refNum = ["1. ", "2. ", "3. ", "4. ", "5. "]
 
         if(!matchAny(type.toLowerCase(), refType)) {
@@ -214,26 +214,23 @@ module.exports = {
         
         var newArr = [];
 
-        // *** FOR POTENTIAL FUTURE USE ****
-        // if(type === 'OHLC') {
-        //     arr.map(function(interval) {
-        //         for(let i = 0; i < 4; i++) {
-        //            var k = refNum[i] + refType[i];
-        //            interval[k]
-        //         }
-        //         return interval.stock
-        //     })
-        //     return;
-        // }
-             // *** ******* ****
+        if(type === 'ohlc') { //for OHLC
+            var newArr = arr.map(function(interval) {
+                var sum = 0;
+                for(let i = 0; i < 4; i++) {
+                   var k = refNum[i] + refType[i];
+                   sum += parseFloat(interval.stock[k]);
+                }
+                return (sum/4).toFixed(2)
+            })
+            return newArr;
+        }
 
         const  k = refNum[refType.indexOf(type)] + type;
-        console.log(k)
         // create final array of stock data for specific type
         for(let i = 0; i < arr.length; i++) {
             newArr.push(parseFloat(arr[i].stock[k]))
         }
-
         return newArr
     },
 
@@ -266,19 +263,15 @@ module.exports = {
         }
 
         // Check if input matches to supported inputs
-        console.log("inside fetch",this)
+
         if(!this.matchAny(fn, supportedFunction) || !this.matchAny(interval, supportedInterval)) {
             console.log("Error", fn, "function or", interval, "is not supported.")
             throw "Error - not supported"
         }
 
-        const url = "https://www.alphavantage.co/query?function="+ fn + "_" + interval + "&symbol=" + symbol + "&apikey=" + key;
-        // const url1 = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&apikey=7LTFIJMN4W4GZFOT"
+        const url = "https://www.alphavantage.co/query?function="+ fn + "_" + interval + "&symbol=" + symbol + '&outputsize=full' + "&apikey=" + key;
+        // const url1 = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=full&apikey=7LTFIJMN4W4GZFOT"
         return fetch(url)
-        // .then(this.checkStatus)
-        // .then(this.parser)
-        // .catch(function(err) {
-        //     console.log("Error", err)
-        // })
+
     }
 }

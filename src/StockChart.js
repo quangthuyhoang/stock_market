@@ -29,7 +29,7 @@ class StockChart extends Component {
                 if(stock[i].symbol === data[j].symbol) {
                     // create single dataset array
                     var chartData = getStockTypeArr(data[j].data, stocktype)
-                    console.log("matched found", "symbol", data[j].symbol, "data", chartData, stock[j].color)
+                    // console.log("matched found", "symbol", data[j].symbol, "data", chartData, stock[j].color)
                     output.push(toChartDataSet(data[j].symbol, chartData, stock[j].color))
                 }
             }
