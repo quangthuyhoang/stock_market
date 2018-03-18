@@ -1,4 +1,3 @@
-const env = require('../env');
 const nasdaq = require('../reference/nasdaqStockInfo');
 
 export function checkStatus(response) {
@@ -17,7 +16,7 @@ export function fetchData(fn, interval, symbol) {
 
     const supportedFunction = ['TIME_SERIES', 'DIGITAL_CURRENCY'];
     const supportedInterval = ['DAILY', 'WEEKLY', 'MONTHLY'];
-    const key = env.stockAPIKey;
+    const key = process.env.REACT_APP_stockAPIKey;
     
     // check function
     if( !fn ) {

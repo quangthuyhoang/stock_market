@@ -23,17 +23,20 @@ function stockListReducer(state = initState, actions) {
     switch(actions.type) {
         // Create 
         case 'GET_STOCK_SUCCESS': {
-            let len = state.data.length;
-            actions.stock._id = len;
+            console.log("prev state", state.data)
+         
             return {
                 ...state,
-                data:[...state.data, actions.stock]
+                data:[...state.data, actions.data]
             }
         }
 
         // Delete
         case 'DELETE_STOCK_SUCCESS': {
-            let newData = [...state.data.slice(0, actions.stock._id), ...state.data.slice(actions.stock._id + 1)]
+            let newData = [...state.data.slice(0, actions._id), ...state.data.slice(actions._id + 1)]
+            // let newData = state.data.filter((stock) => {
+                // return stock._id !=- actions._id
+            // })
             for(let i = 0; i < newData.length; i++) {
                 newData[i]._id = i
             }

@@ -1,4 +1,4 @@
-const env = require('./env');
+
 const nasdaq = require('./reference/nasdaqStockInfo');
 const commons = require('./commons');
 

@@ -1,4 +1,3 @@
-const env = require('./env');
 const nasdaq = require('./reference/nasdaqStockInfo');
 
 function resolved(result) {
@@ -109,7 +108,7 @@ module.exports = {
                 arr.push({dates: keyDates[i], stock: timeSeries[keyDates[i]]})
             }
         }
-
+        
         const init = {symbol: data["Meta Data"]['2. Symbol']};   
         init.data = arr.reverse();
   
@@ -130,16 +129,6 @@ module.exports = {
             }
         }
      
-        // const intRef = {
-        //     "1Y": {
-        // 
-        //         "WEEKLY": 52,
-        //         "MONTHLY": 365
-        //     },
-        //     "3M": {
-
-        //     }
-        // }
         const len = arr.length;
         const stocks = arr;
         var data = stocks.map(function(stock) {
@@ -239,7 +228,7 @@ module.exports = {
 
         const supportedFunction = ['TIME_SERIES', 'DIGITAL_CURRENCY'];
         const supportedInterval = ['DAILY', 'WEEKLY', 'MONTHLY'];
-        const key = env.stockAPIKey;
+        const key = process.env.REACT_APP_stockAPIKey;
         
         // check function
         if( !fn ) {

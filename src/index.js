@@ -5,10 +5,12 @@ import './index.css';
 import App from './App';
 import { Provider } from 'react-redux';
 import { configureStore } from './store/configureStore';
-import {GetStock, DeleteStock, fetchStock } from './actions/actions'
+import {GetStock, DeleteStock, fetchStock, GetStockSuccess,} from './actions/actions'
 import { createStore, applyMiddleware } from 'redux';
 import registerServiceWorker from './registerServiceWorker';
 import reducer from './reducers/reducer';
+import thunk from 'redux-thunk';
+import { createLogger } from 'redux-logger';
 const nasdaq = require('./reference/nasdaqStockInfo');
 
 const listr = [
@@ -29,38 +31,19 @@ const initState = {
     }
 }
 
-// const store = configureStore(initState) 
-const store = createStore(reducer, initState)
-// initState   
-console.log("first",store.getState())
+const middleware = [thunk, createLogger()]
 
-console.log(typeof fetchStock('MSFT'), store.dispatch(GetStock('MSFT')))
-// console.log(store.dispatch(fetchStock('TSLA')))
-console.log("after",store.getState())
-
-
-// DIspatch items
-// store.dispatch(fetchStock('TSLA'))
-// store.dispatch(GetStock('AAPL'))
-// store.dispatch(GetStock('CRM'))
-// store.dispatch(GetStock('TEST'))
-// store.dispatch(DeleteStock('TEST'))
-// store.dispatch(DeleteStock('MSFT'))
-
-const unsubscribe = store.subscribe(() => {
-  console.log("after",store.getState())
-})
-// stop listening to state updates
+const store = configureStore(initState) 
+console.log(store.getState())
+// const store = createStore(reducer, initState, applyMiddleware(...middleware))
+console.log(store.dispatch(GetStock('MMM')))
+console.log(store.dispatch(GetStock('COKE')))
+console.log(store.dispatch(GetStock('TSLA')))
+setTimeout(()=> {return console.log(store.dispatch(DeleteStock(0)), store.getState())}, 5000)
+// console.log(store.dispatch(GetStock('AAPL')))
 
 
 
-const Root = (props) => {
-  return (
-    <Provider store={store}>
 
-    </Provider>
-  )
-}
-
-ReactDOM.render(<App />, document.getElementById('root'));
+ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
 registerServiceWorker();
