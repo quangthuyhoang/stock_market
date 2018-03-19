@@ -21,6 +21,13 @@ const initState = {
 
 function stockListReducer(state = initState, actions) {
     switch(actions.type) {
+        // update input
+        case 'INPUT_CHANGE': {
+            return {
+                ...state,
+                input: actions.input
+            }
+        }
         // Create 
         case 'GET_STOCK_SUCCESS': {
             console.log("prev state", state.data)

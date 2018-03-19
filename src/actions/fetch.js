@@ -79,7 +79,7 @@ export function parser(data) {
         }
     }
 
-    const init = {symbol: data["Meta Data"]['2. Symbol']};   
+    const init = {symbol: data["Meta Data"]['2. Symbol'], info: createCompany(data["Meta Data"]['2. Symbol'])};   
     init.data = arr.reverse();
 
     return init;
@@ -107,3 +107,4 @@ export function createCompany(ticker) {
     }
     return {error: "Could not find matching result"}
 }
+

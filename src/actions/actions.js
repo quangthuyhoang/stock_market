@@ -2,6 +2,15 @@ import commons from '../commons';
 import { fetchData, parser, checkStatus, createCompany } from './fetch'
 const nasdaq = require('../reference/nasdaqStockInfo');
 
+export function handleInputChange(txt) {
+    return {
+        type: 'INPUT_CHANGE',
+        input: txt
+    }
+}
+
+
+
 export function GetStockSuccess(stock) {
     if(stock) {
         console.log("inside getstock success",stock)
@@ -11,16 +20,6 @@ export function GetStockSuccess(stock) {
             data: stock
         }
 }
-
-// export function fetchStock(symbol) {
-//     return (dispatch) => {
-//         return fetchData('TIME_SERIES', 'DAILY', symbol)
-//         .then( res => res.json())
-//         .then(
-//             res => dispatch(GetStockSuccess(res))
-//         )
-//     }
-// }
 
 export function GetStock(symbol) {
 

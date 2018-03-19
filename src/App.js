@@ -7,8 +7,11 @@ import StockList from "./StockList.js";
 import commons from './commons';
 import onError from './OnError';
 import seed from './reference/seed';
-// import seed2 from './reference/seed2';
+import {connect} from 'react-redux';
+import {bindActionCreators} from 'redux';
+import * as actions from './actions/actions';
 import AddBox from "./AddBox";
+import StockListContainer from './containers/StockListContainer';
 
 const toChartDataSet = require('./commons').chartDataSet;
 // const getStockTypeArr = require('./commons').getStockTypeArr;
@@ -35,7 +38,6 @@ class App extends Component {
     super(props);
     this.state = {
       companyList: listr,
-      seed: seed,
       data: [],
       xAxis: xAxis,
       option: {
@@ -52,6 +54,10 @@ class App extends Component {
     this.updateStockType = this.updateStockType.bind(this)
   }
   componentDidMount() {
+    // if(this.props.data.length === 0) {
+    //   // invoke fetch default data
+    //   console.log("no data in store")
+    // }
     // dev purppose only
   //  console.log("component did mount")
   // console.log("beofre component did mount", this.state.option.intervalLength)
@@ -163,7 +169,7 @@ class App extends Component {
     }
 
   render() {
-   
+    console.log("inside App test", this.props.store)
     return (
       <div className="App">
       
@@ -171,11 +177,42 @@ class App extends Component {
         <StockBox chartData={this.state.data} stockList={this.state.companyList} 
         xAxis={this.state.xAxis} option={this.state.option} intLen={this.state.option.intervalLength}
         stockTypeHandler={this.updateStockType}/>
-        <StockList stockList={this.state.companyList} del={this.removeItem} onHandleSubmit={this.updateListhandler}/>
+        <StockListContainer />
+        {/* <StockList stockList={this.state.companyList} del={this.removeItem} onHandleSubmit={this.updateListhandler}/> */}
  
       </div>
     );
   }
 }
 
+// allow us to use state data to be passed down as props
+function mapStateToProps(state, ownProps) {
+  return {
+    data: state.data
+  }
+}
+// allow us to use actions dispatch to be passed down as props
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: bindActionCreators(actions, dispatch)
+  }
+}
+
 export default App;
+
+
+// Original
+// render() {
+   
+//   return (
+//     <div className="App">
+    
+      
+//       <StockBox chartData={this.state.data} stockList={this.state.companyList} 
+//       xAxis={this.state.xAxis} option={this.state.option} intLen={this.state.option.intervalLength}
+//       stockTypeHandler={this.updateStockType}/>
+//       <StockList stockList={this.state.companyList} del={this.removeItem} onHandleSubmit={this.updateListhandler}/>
+
+//     </div>
+//   );
+// }
