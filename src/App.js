@@ -188,7 +188,8 @@ class App extends Component {
 // allow us to use state data to be passed down as props
 function mapStateToProps(state, ownProps) {
   return {
-    data: state.data
+    data: state.data,
+    companyList: state.companyList
   }
 }
 // allow us to use actions dispatch to be passed down as props

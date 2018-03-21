@@ -1,32 +1,63 @@
 import React, { Component } from 'react';
 import './App.css';
 import Company from './Company';
-import AddBox from './AddBox';
+import AddBoxContainer from './containers/AddBoxContainer';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
 import * as actions from './actions/actions';
 
-const StockList = (props) => {
+class StockList extends Component {
+    constructor(props) {
+        super(props);
+    }
 
-    console.log(props)
-    function showList() {
-        if(!props.stockList) {
+    
+
+    renderEmptyList() {
+        return (
+            <AddBoxContainer onHandleSubmit={this.props.onHandleSubmit} />
+        )
+    }
+
+    renderList() {
+        var listr = this.props.stockList.map((company, i) => {
+            return <Company key={i} name={company.name} symbol={company.symbol} industry={company.industry} id={i} del={this.props.del} /> 
+        })
+        return listr.push(<AddBoxContainer onHandleSubmit={this.props.handleSubmit} key={listr.length}/>)
+    }
+
+    showList() {
+        console.log("stocklist",this.props)
+        if(!this.props.stockList) {
             return (
-                <AddBox onHandleSubmit={props.onHandleSubmit} />
+                <AddBoxContainer onHandleSubmit={this.props.onHandleSubmit} />
             )
         }
 
-        var listr = props.stockList.map((company, i) => {
-            return <Company key={i} name={company.name} symbol={company.symbol} industry={company.industry} id={i} del={props.del} /> 
+        var listr = this.props.stockList.map((company, i) => {
+            return <Company key={i} name={company.name} symbol={company.symbol} industry={company.industry} id={i} del={this.props.del} /> 
         })
-        return listr.push(<AddBox onHandleSubmit={props.onHandleSubmit} key={listr.length}/>)
+        return listr.push(<AddBoxContainer onHandleSubmit={this.props.handleSubmit} key={listr.length}/>)
     }
+    render() {
 
-    return (
-        <div id="stocklist" className="center">
-            {showList()}
-        </div>
-    ) 
+            
+
+        if(!this.props.stockList) {
+            return (
+                <div id="stocklist" className="center">
+                {this.renderEmptyList()}
+            </div>
+            )
+        }
+
+        return (
+            <div id="stocklist" className="center">
+                {this.renderList()}
+            </div>
+        )
+    }
+    
 }
 
 export default StockList;

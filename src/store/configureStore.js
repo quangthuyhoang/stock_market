@@ -7,10 +7,10 @@ import  thunk from 'redux-thunk';
 // import reducer
 import stockApp from '../reducers/reducer';
 
-export function configureStore(initState) {
+export function configureStore() {
     return createStore(
         stockApp,
-        initState,
+      
         applyMiddleware(thunk, createLogger())
     )
 }
