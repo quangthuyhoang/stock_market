@@ -13,6 +13,10 @@ class StockChart extends Component {
         super(props);
     }
 
+    componentDidMount() {
+
+    }
+
     // with Chart Data set Object
     chartDataHandler(stocktype) {
         var stock = this.props.stockList, data = this.props.data, output = [];
@@ -42,11 +46,23 @@ class StockChart extends Component {
         var data = this.props.data;
         
     }
+
+
     
     render() {
-      
+        var chartDataSet = [], newData = {labels: this.props.xAxis};
+        if(this.props.data.length > 0) {
+            console.log("data",this.props.data)
+            var chartDataSet = this.props.data.map(function(stock) {
+                return toChartDataSet(stock.info.symbol, getStockTypeArr(stock.data, 'close'),)
+            })
+
+            newData.datasets = chartDataSet;
+        }
+        
+        console.log("chartdataset", chartDataSet)
         const dataset2 = this.chartDataHandler(this.props.stockType)
-        var newData = {labels: this.props.xAxis, datasets: dataset2};
+        // var newData = {labels: this.props.xAxis};
 
         return (
         <div id="stockchart" className="left">

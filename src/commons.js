@@ -191,7 +191,6 @@ module.exports = {
     },
 
     getStockTypeArr: function(arr, type) {
-
         // Acceptable type values
         const refType = ['open', 'high','low', 'close', 'volume', 'ohlc'];
         const refNum = ["1. ", "2. ", "3. ", "4. ", "5. "]

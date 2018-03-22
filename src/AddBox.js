@@ -18,7 +18,6 @@ class AddBox extends Component {
 
 	handleInputChange(e) {
 		e.preventDefault();
-		this.props.handleInputChange(e.target.value)
 		this.setState({input: e.target.value})
 	}
 
@@ -29,7 +28,7 @@ class AddBox extends Component {
 			return;
 		}
 
-		this.props.handleSubmit(this.state.input)
+		this.props.onHandleSubmit(this.state.input)
 		e.target.value = ""
 		this.setState({input: ""})
 		
@@ -39,7 +38,7 @@ class AddBox extends Component {
 		if(this.state.input.length === 0) {
 			return;
 		}
-		this.props.handleSubmit(this.state.input)
+		this.props.onHandleSubmit(this.state.input)
 		this.setState({input: ""})
 	}
     

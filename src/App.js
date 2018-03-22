@@ -3,7 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import StockBox from './StockBox';
 import StockChart from './StockChart';
-import StockList from "./StockList.js";
+import StockList from "./StockList";
 import commons from './commons';
 import onError from './OnError';
 import seed from './reference/seed';
@@ -37,6 +37,7 @@ class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      input:"sdfsdf",
       companyList: listr,
       data: [],
       xAxis: xAxis,
@@ -115,7 +116,7 @@ class App extends Component {
         var newList = this.state.companyList;
         var newData = this.state.data;
 
-        // create new company tile
+        // create new company 
         var newComp = commons.createCompany(result.symbol)
         newComp.color = commons.getRandomColor();
     
@@ -169,7 +170,7 @@ class App extends Component {
     }
 
   render() {
-    console.log("inside App test", this.props.store)
+
     return (
       <div className="App">
       
@@ -177,27 +178,30 @@ class App extends Component {
         <StockBox chartData={this.state.data} stockList={this.state.companyList} 
         xAxis={this.state.xAxis} option={this.state.option} intLen={this.state.option.intervalLength}
         stockTypeHandler={this.updateStockType}/>
-        <StockListContainer />
-        {/* <StockList stockList={this.state.companyList} del={this.removeItem} onHandleSubmit={this.updateListhandler}/> */}
+        {/* <StockListContainer input={this.state.input}/> */}
+        <StockList stockList={this.props.data} del={this.props.del} onHandleSubmit={this.props.handleSubmit}/>
+        {/* <StockList stockList={this.companyList} del={this.removeItem} onHandleSubmit={this.updateListhandler}/> */}
  
       </div>
     );
-  }
+  }p
 }
 
 // allow us to use state data to be passed down as props
-function mapStateToProps(state, ownProps) {
-  return {
-    data: state.data,
-    companyList: state.companyList
-  }
-}
-// allow us to use actions dispatch to be passed down as props
-function mapDispatchToProps(dispatch) {
-  return {
-    actions: bindActionCreators(actions, dispatch)
-  }
-}
+// function mapStateToProps(state, ownProps) {
+//   return {
+//     data: state.data,
+//     companyList: state.companyList
+//   }
+// }
+// // allow us to use actions dispatch to be passed down as props
+// function mapDispatchToProps(dispatch) {
+//   return {
+//     actions: bindActionCreators(actions, dispatch)
+//   }
+// }
+
+// const App = connect(mapStateToProps, mapDispatchToProps)(App);
 
 export default App;
 

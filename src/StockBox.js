@@ -15,7 +15,7 @@ class StockBox extends Component {
     }
 
  render() {
-    console.log("inside stockbox. stockList", this.props.stockList, this.props.chartData)
+    console.log("inside stockbox. stockList", this.props.option.refType)
      return (
         <div id="stockbox" className="center">
         

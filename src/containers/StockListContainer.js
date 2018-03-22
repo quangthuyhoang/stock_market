@@ -3,7 +3,7 @@ import StockList from '../StockList';
 import * as actions from '../actions/actions';
 
 function mapStateToProps (state, ownProps) {
-    return { stockList: state.companyList, input: state.input }
+    return { stockList: state.companyList, input: state.input , stateInput: this.props}
 }
 const mapDispatchToProps = (dispatch, ownProps) => ({ 
     handleInputChange: dispatch(actions.handleInputChange),

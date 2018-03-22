@@ -9,7 +9,6 @@ const xAxis = ["1.14", "1.21", "1.28", "2.04", "2.11", "2.18", "2.25", "3.03", "
 
 const initState = {
     input: "",
-    companyList: [],
     data: [],
     xAxis: xAxis,
     option: {
@@ -34,7 +33,6 @@ function stockListReducer(state = initState, actions) {
             return {
                 ...state,
                 data:[...state.data, actions.data],
-                companyList:[...state.companyList, actions.data.symbol],
                 input: ""
             }
         }
