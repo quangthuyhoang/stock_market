@@ -1,5 +1,5 @@
 import commons from '../commons';
-import { fetchData, parser, checkStatus, createCompany } from './fetch'
+import { fetchData, parser, checkStatus, createCompany, getRandomColor } from './fetch'
 const nasdaq = require('../reference/nasdaqStockInfo');
 
 export function handleInputChange(txt) {
@@ -8,8 +8,6 @@ export function handleInputChange(txt) {
         input: txt
     }
 }
-
-
 
 export function GetStockSuccess(stock) {
     return {
@@ -45,13 +43,15 @@ export function GetStock(symbol) {
             dispatch(GetStockFailure())
         }
     }
+
+    info.color = getRandomColor();
+
     // ON SUCCESS
     return function(dispatch) {
         return fetchData('TIME_SERIES', 'DAILY', symbol)
         .then(checkStatus).then(parser).then(res => {
             res.info = info;
             dispatch(GetStockSuccess(res))
-            // dispatch(UpdateList(res.symbol))
         })
     }
 }
@@ -73,3 +73,20 @@ export function DeleteStock(id) {
     }
 }
 
+function UpdateStockTypeSuccess(type) {
+    return {
+        type: 'OPTION_TYPE',
+        option: {
+            intervalLength: "DAILY",
+            viewScope: "year",
+            refType: type,
+            // xAxis: "TIME_SERIES"
+          }
+    }
+}
+
+export function UpdateStockType(type) {
+    return (dispatch) => {
+        dispatch(UpdateStockTypeSuccess(type))
+    }
+}

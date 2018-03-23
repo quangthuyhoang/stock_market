@@ -15,7 +15,7 @@ const initState = {
       intervalLength: "DAILY",
       viewScope: "year",
       refType: "close",
-      xAxis: "TIME_SERIES"
+    //   xAxis: "TIME_SERIES"
     }
 }
 
@@ -41,6 +41,14 @@ function stockListReducer(state = initState, actions) {
             return {
                 ...state,
                 // companyList:[...state.companyList, actions.symbol]
+            }
+        }
+
+        // UPDATE
+        case 'OPTION_TYPE': {
+            return {
+                ...state,
+                option: actions.option
             }
         }
 

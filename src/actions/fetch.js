@@ -7,7 +7,6 @@ export function checkStatus(response) {
       }
       
     if(response.status === 200 || response.ok) {
-        console.log("checkstatus",response)
         return response.json();
     }
 }
@@ -46,14 +45,13 @@ export function fetchData(fn, interval, symbol) {
         throw "Error - not supported"
     }
 
-    const url = "https://www.alphavantage.co/query?function="+ fn + "_" + interval + "&symbol=" + symbol + '&outputsize=full' + "&apikey=" + key;
+    const url = "https://www.alphavantage.co/query?function="+ fn + "_" + interval + "&symbol=" + symbol + '&outputsize=full&apikey=' + key;
     // const url1 = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=full&apikey=7LTFIJMN4W4GZFOT"
     return fetch(url)
 }
 
 export function parser(data) {
     // Error handler
-
     if(!data || typeof data !== 'object' || !data["Meta Data"] ) {
         return;
     }
@@ -108,3 +106,11 @@ export function createCompany(ticker) {
     return {error: "Could not find matching result"}
 }
 
+export function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}

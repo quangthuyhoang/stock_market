@@ -55,13 +55,7 @@ class App extends Component {
     this.updateStockType = this.updateStockType.bind(this)
   }
   componentDidMount() {
-    // if(this.props.data.length === 0) {
-    //   // invoke fetch default data
-    //   console.log("no data in store")
-    // }
-    // dev purppose only
-  //  console.log("component did mount")
-  // console.log("beofre component did mount", this.state.option.intervalLength)
+ 
     var p = commons.fetchData('TIME_SERIES', this.state.option.intervalLength, listr[0].symbol);
    
     p.then(commons.checkStatus)
@@ -156,10 +150,10 @@ class App extends Component {
     }
 
     updateStockType(e) {
-      var type = e.target.innerHTML;
-      var nOption = this.state.option;
-      nOption.refType = type;
-      this.setState({option: nOption})
+      // var nOption = this.props.option;
+      // nOption.refType = e.target.innerHTML;
+      this.props.typeSelect(e.target.innerHTML)
+      // this.setState({option: nOption})
     }
 
     updateView(e) {
@@ -175,8 +169,8 @@ class App extends Component {
       <div className="App">
       
         
-        <StockBox chartData={this.state.data} stockList={this.state.companyList} 
-        xAxis={this.state.xAxis} option={this.state.option} intLen={this.state.option.intervalLength}
+        <StockBox chartData={this.props.data} stockList={this.state.companyList} 
+        xAxis={this.state.xAxis} option={this.props.option} intLen={this.state.option.intervalLength}
         stockTypeHandler={this.updateStockType}/>
         {/* <StockListContainer input={this.state.input}/> */}
         <StockList stockList={this.props.data} del={this.props.del} onHandleSubmit={this.props.handleSubmit}/>

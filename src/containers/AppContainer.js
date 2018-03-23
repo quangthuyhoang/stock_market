@@ -7,12 +7,14 @@ function mapStateToProps (state) {
 
     return {
         data: state.stockListReducer.data,
+        option: state.stockListReducer.option
     }
 };
 
 const mapDispatchToProps = (dispatch, ownProps) => ({ 
     handleSubmit: bindActionCreators(actions.GetStock, dispatch),
-    del: bindActionCreators(actions.DeleteStock, dispatch)
+    del: bindActionCreators(actions.DeleteStock, dispatch),
+    typeSelect: bindActionCreators(actions.UpdateStockType, dispatch)
 })
 
 const AppContainer = connect(mapStateToProps, mapDispatchToProps)(App);
