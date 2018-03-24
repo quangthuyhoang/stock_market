@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import './App.css';
+import '../App.css';
 import Company from './Company';
-import AddBoxContainer from './containers/AddBoxContainer';
+import AddBoxContainer from '../containers/AddBoxContainer';
 import AddBox from './AddBox';
 import {connect} from 'react-redux';
 import {bindActionCreators} from 'redux';
-import * as actions from './actions/actions';
+import * as actions from '../actions/actions';
 
 
 class StockList extends Component {

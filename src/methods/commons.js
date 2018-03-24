@@ -1,4 +1,4 @@
-const nasdaq = require('./reference/nasdaqStockInfo');
+const nasdaq = require('../reference/nasdaqStockInfo');
 
 function resolved(result) {
     console.log("Issue has been resolved");

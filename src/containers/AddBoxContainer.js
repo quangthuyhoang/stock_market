@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import AddBox from '../AddBox';
+import AddBox from '../components/AddBox';
 import * as actions from '../actions/actions';
 
 function mapStateToProps(state, ownPros) {

@@ -1,4 +1,3 @@
-import commons from '../commons';
 import { fetchData, parser, checkStatus, createCompany, getRandomColor } from './fetch'
 const nasdaq = require('../reference/nasdaqStockInfo');
 

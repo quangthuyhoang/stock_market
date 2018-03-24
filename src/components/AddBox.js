@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import * as actions from './actions/actions'
-import './App.css';
+import * as actions from '../actions/actions'
+import '../App.css';
 
 class AddBox extends Component {
     constructor(props) {

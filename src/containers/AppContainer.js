@@ -1,5 +1,5 @@
 import { connect } from 'react-redux';
-import App from '../App';
+import App from '../components/App';
 import * as actions from '../actions/actions';
 import {bindActionCreators} from 'redux';
 
