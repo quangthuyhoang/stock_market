@@ -2,8 +2,9 @@
   "name": "stock_market",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://myusername.github.io/stock_market",
+  "homepage": "https://github.com/quangthuyhoang/stock_market#readme",
   "dependencies": {
+    "gh-pages": "^1.1.0",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
@@ -14,6 +15,8 @@
     "redux-thunk": "^2.2.0"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "mocha",
@@ -28,7 +31,6 @@
   "bugs": {
     "url": "https://github.com/quangthuyhoang/stock_market/issues"
   },
-  "homepage": "https://github.com/quangthuyhoang/stock_market#readme",
   "devDependencies": {
     "chai": "^4.1.2",
     "chart.js": "^2.7.1",
