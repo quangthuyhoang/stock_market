@@ -2,6 +2,7 @@
   "name": "stock_market",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://myusername.github.io/stock_market",
   "dependencies": {
     "prop-types": "^15.6.1",
     "react": "^16.2.0",

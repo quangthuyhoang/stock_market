@@ -65,7 +65,6 @@ var Dataset = function(label, data, color) {
 }
 
 
-
 module.exports = {
 
     checkStatus: function(response) {
@@ -75,7 +74,6 @@ module.exports = {
           }
           
         if(response.status === 200 || response.ok) {
-            // console.log("checkstatus",response)
             return response.json();
         }
         
@@ -92,11 +90,8 @@ module.exports = {
         const refLimit = {'(DAILY)': 262, 'WEEKLY': 52, 'MONTHLY': 12};
         const refArr = Object.keys(refLimit)
         const intLen = Object.keys(data)[1];
-        // const findint = intLen.split(" ")
-    
-        // const limit = refLimit[intLen.split(" ")[0].toUpperCase()];
         const limit = refLimit["(DAILY)"]
-        // console.log("inside parser - intLen",intLen.split(" ")[0])
+
        
         const timeSeries = data[intLen];
         const keyDates = Object.keys(timeSeries).splice(0,limit);
@@ -258,8 +253,7 @@ module.exports = {
         }
 
         const url = "https://www.alphavantage.co/query?function="+ fn + "_" + interval + "&symbol=" + symbol + '&outputsize=full' + "&apikey=" + key;
-        // const url1 = "https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=MSFT&outputsize=full&apikey=7LTFIJMN4W4GZFOT"
-        return fetch(url)
+         return fetch(url)
 
     }
 }

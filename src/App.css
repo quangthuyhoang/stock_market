@@ -73,7 +73,7 @@
 #stockbox {
   border: 0px solid black;
   max-width: 1000px;
-  min-height: 500px;
+  min-height: 200px;
   background-color:rgb(95, 95, 99);
   margin-top: 5%;
 }
@@ -82,7 +82,7 @@
   border: 0px solid green;
   /* min-width: 1200px; */
   width: 100%;
-  min-height: 499px;
+  min-height: 100px;
   background-color: rgb(95, 95, 99);
 }
 

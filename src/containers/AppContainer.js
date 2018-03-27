@@ -14,7 +14,8 @@ function mapStateToProps (state) {
 const mapDispatchToProps = (dispatch, ownProps) => ({ 
     handleSubmit: bindActionCreators(actions.GetStock, dispatch),
     del: bindActionCreators(actions.DeleteStock, dispatch),
-    typeSelect: bindActionCreators(actions.UpdateStockType, dispatch)
+    typeSelect: bindActionCreators(actions.UpdateStockType, dispatch),
+    xAxis: bindActionCreators(actions.UpdateTime, dispatch)
 })
 
 const AppContainer = connect(mapStateToProps, mapDispatchToProps)(App);

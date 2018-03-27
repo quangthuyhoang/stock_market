@@ -1,4 +1,4 @@
-import { fetchData, parser, checkStatus, createCompany, getRandomColor } from './fetch'
+import { fetchData, parser, checkStatus, createCompany, getRandomColor, timeSeries } from './fetch'
 const nasdaq = require('../reference/nasdaqStockInfo');
 
 export function handleInputChange(txt) {
@@ -25,6 +25,25 @@ function UpdateList(symbol) {
     return {
         type: 'UPDATE_LIST',
         symbol: symbol
+    }
+}
+
+function UpdateStockTypeSuccess(type) {
+    return {
+        type: 'OPTION_TYPE',
+        option: {
+            intervalLength: "DAILY",
+            viewScope: "year",
+            refType: type,
+            // xAxis: "TIME_SERIES"
+          }
+    }
+}
+
+function GetTimeSuccess(xAxis) {
+    return {
+        type: 'GET_TIME_SUCCESS',
+        xAxis: xAxis
     }
 }
 
@@ -72,20 +91,15 @@ export function DeleteStock(id) {
     }
 }
 
-function UpdateStockTypeSuccess(type) {
-    return {
-        type: 'OPTION_TYPE',
-        option: {
-            intervalLength: "DAILY",
-            viewScope: "year",
-            refType: type,
-            // xAxis: "TIME_SERIES"
-          }
-    }
-}
 
 export function UpdateStockType(type) {
     return (dispatch) => {
         dispatch(UpdateStockTypeSuccess(type))
+    }
+}
+
+export function UpdateTime(dataArr) {
+    return (dispatch) => {
+        dispatch(GetTimeSuccess(timeSeries(dataArr)))
     }
 }

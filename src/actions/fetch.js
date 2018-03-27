@@ -108,3 +108,30 @@ export function getRandomColor() {
     }
     return color;
 }
+
+export function timeSeries(arr , option) { //interval & scope
+    console.log(arr)
+    // Error handlers
+    if(!arr) {
+        console.log("Error: timeseries array input.")
+        return;
+    }
+    if(!option) {
+        option = {
+            interval: "(DAILY)",
+            scope: "1Y"
+        }
+    }
+ 
+    const len = arr.length;
+    const stocks = arr;
+    var data = stocks.map(function(stock) {
+        
+        if(stock.dates.split("-")[1][0] === "0") {
+            return stock.dates.split("-")[1][1] + "." +stock.dates.split("-")[2] + "." + stock.dates.split("-")[0] // year + "." + stock.dates.split("-")[0]
+        }
+        return stock.dates.split("-")[1] + "." +stock.dates.split("-")[2] + "." + stock.dates.split("-")[0] // year+ "." + stock.dates.split("-")[0]
+    });
+
+    return data;
+}

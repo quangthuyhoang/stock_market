@@ -10,7 +10,7 @@ const xAxis = ["1.14", "1.21", "1.28", "2.04", "2.11", "2.18", "2.25", "3.03", "
 const initState = {
     input: "",
     data: [],
-    xAxis: xAxis,
+    xAxis: [],
     option: {
       intervalLength: "DAILY",
       viewScope: "year",

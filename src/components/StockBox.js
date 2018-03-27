@@ -15,7 +15,7 @@ class StockBox extends Component {
     }
 
  render() {
-    console.log("inside stockbox. stockList", this.props.option.refType)
+
      return (
         <div id="stockbox" className="center">
         
@@ -23,10 +23,10 @@ class StockBox extends Component {
             <div className="menu">
             <div className="menu-setting-left">
             {/* <p>Stock Type</p> */}
-            <button className="stockTypeBtn" onClick={this.updateView} >1M</button>
+            {/* <button className="stockTypeBtn" onClick={this.updateView} >1M</button>
             <button className="stockTypeBtn" onClick={this.updateView} >3M</button>
             <button className="stockTypeBtn" onClick={this.updateView} >YTD</button>
-            <button className="stockTypeBtn" onClick={this.updateView} >1Y</button>
+            <button className="stockTypeBtn" onClick={this.updateView} >1Y</button> */}
           </div>
           <div className="menu-setting-right">
             {/* <p>Stock Type a</p> */}
@@ -37,8 +37,8 @@ class StockBox extends Component {
             <button className="stockTypeBtn" onClick={this.stockTypeHandler} >ohlc</button>
           </div>
           </div>
-            <StockChart stockList={this.props.stockList} stockType={this.props.option.refType} data={this.props.chartData} xAxis={this.props.xAxis}/>
-            {/* <StockList stockList={this.props.stockList}/> */}
+            <StockChart stockList={this.props.stockList} stockType={this.props.option.refType} 
+            data={this.props.chartData} xAxis={this.props.xAxis}/>
         </div>
      )
   

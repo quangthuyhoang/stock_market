@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import chartOption from '../StockChart.options';
+import chartOption from '../methods/StockChart.options';
 import '../App.css';
 import {Line} from 'react-chartjs-2';
 const getChartDataSet = require('../methods/commons').chartDataSet;

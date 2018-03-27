@@ -28,7 +28,7 @@ class App extends Component {
       input:"sdfsdf",
       companyList: listr,
       data: [],
-      xAxis: xAxis,
+      xAxis: [],
       option: {
         intervalLength: "DAILY",
         viewScope: "year",
@@ -54,6 +54,7 @@ class App extends Component {
         
         this.setState({data: newData}, function() {
           this.xAxisHandler()
+          
         })
       })
       .catch(function(err) {
@@ -62,12 +63,15 @@ class App extends Component {
   }
 
   componentWillMount() {
-    var d = new Date();
-    const m = d.getMonth();
     
   }
 
   xAxisHandler() {
+    console.log("xAxis handler", this.props.data)
+    // if(this.props.data && this.props.data.length > 0) {
+      this.props.xAxis(this.state.data[0].data)
+    // }
+    // this.props.xAxis(this.props.data[])
     var timeseries = commons.timeSeries(this.state.data[0].data);
     this.setState({xAxis: timeseries}, () => {
     })
@@ -114,37 +118,4 @@ class App extends Component {
   }p
 }
 
-// allow us to use state data to be passed down as props
-// function mapStateToProps(state, ownProps) {
-//   return {
-//     data: state.data,
-//     companyList: state.companyList
-//   }
-// }
-// // allow us to use actions dispatch to be passed down as props
-// function mapDispatchToProps(dispatch) {
-//   return {
-//     actions: bindActionCreators(actions, dispatch)
-//   }
-// }
-
-// const App = connect(mapStateToProps, mapDispatchToProps)(App);
-
 export default App;
-
-
-// Original
-// render() {
-   
-//   return (
-//     <div className="App">
-    
-      
-//       <StockBox chartData={this.state.data} stockList={this.state.companyList} 
-//       xAxis={this.state.xAxis} option={this.state.option} intLen={this.state.option.intervalLength}
-//       stockTypeHandler={this.updateStockType}/>
-//       <StockList stockList={this.state.companyList} del={this.removeItem} onHandleSubmit={this.updateListhandler}/>
-
-//     </div>
-//   );
-// }
