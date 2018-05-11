@@ -1,7 +1,7 @@
 ### README
 
 #Stock Market Visualization App
-(public/picture1.PNG)
+![a relative link](public/picture1.PNG)
 
 ##
 Created using React-Redux
